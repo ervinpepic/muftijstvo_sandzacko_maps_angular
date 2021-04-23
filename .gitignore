@@ -1,8 +1,9 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled output
-/app/database-seeding/database-markers-data-seed.ts
-/app/maps-polygons/sandzak
+/src/app/database-seeding/database-markers-data-seed.ts
+/src/app/maps-polygons/sandzak
+
 /dist
 /tmp
 /out-tsc
