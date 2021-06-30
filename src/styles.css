@@ -31,3 +31,10 @@
 img {
   border-radius: 3%;
 }
+body {
+  background-image: url("/assets/images/info-window-background.png");
+  background-attachment: fixed;
+  background-position: center center;
+  background-size: auto;
+  background-repeat: repeat;
+}
