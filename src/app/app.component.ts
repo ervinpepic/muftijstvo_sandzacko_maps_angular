@@ -12,7 +12,8 @@ import { PolygonsBoundaries } from './maps-polygons/map-polygons';
 	styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-	title = "MuftijstvoSandzackoMaps";
+	title = 'MuftijstvoSandzackoMaps';
+	
 	@ViewChild('mapContainer', { static: false }) gmap: ElementRef;
 	map?: google.maps.Map;
 	markers = addMarkerToMap;
