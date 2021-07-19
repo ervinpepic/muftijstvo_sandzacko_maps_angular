@@ -26,7 +26,7 @@ export function infoWindowStyling(markerInfo) {
             "<div class='col'>"+ 
               "<p class='lead mt-2 mb-2'><span><strong><i class='fas fa-image'></i> Slika objekta: </strong></span>" + "</p>" + 
               
-              "<img src='" + markerInfo.img + "' class='img-fluid img-thumbnail' width='300' height='300'" +   
+              "<img src='" + markerInfo.img + "' class='img-fluid img-thumbnail' width='100%' height='auto'" +   
             "</div>" +
           "</div>" +
         "</div>"
