@@ -18,7 +18,8 @@ export function addMarkerToMap(map) {
             position: new google.maps.LatLng(marker_data.latLng.lat, marker_data.latLng.lng),
             icon: markerLabelAndIcons.markerIconDefaultCreate(),
             label: markerLabelAndIcons.markerLabelDefault(marker_data),
-            draggable: true,
+            draggable: false,
+            optimized: false,
             animation: google.maps.Animation.DROP,
         });
         
