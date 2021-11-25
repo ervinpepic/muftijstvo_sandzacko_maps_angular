@@ -1,1 +1,0 @@
-{"ast":null,"code":"export function zoomChange(map, polygonName) {\n  map.addListener(\"zoom_changed\", () => {\n    if (map.getZoom() > 11) polygonName.setMap(null);else polygonName.setMap(map);\n  });\n}","map":null,"metadata":{},"sourceType":"module"}
