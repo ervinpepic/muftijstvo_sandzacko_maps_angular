@@ -3,7 +3,7 @@ export class MarkerLabelAndIcons {
     markerIconDefaultCreate() {
         let icon = {
             url: "../assets/images/marker_main.svg",
-            scaledSize: new google.maps.Size(50, 50),
+            scaledSize: new google.maps.Size(40, 40),
             labelOrigin: new google.maps.Point(20, -15),
         }
         return icon
@@ -11,7 +11,7 @@ export class MarkerLabelAndIcons {
     markerIconDefault(marker) {
         marker.setIcon({
             url: "../assets/images/marker_main.svg",
-            scaledSize: new google.maps.Size(50, 50),
+            scaledSize: new google.maps.Size(40, 40),
             labelOrigin: new google.maps.Point(20, -15),
         });
     }
@@ -19,7 +19,7 @@ export class MarkerLabelAndIcons {
     markerIconLarge(marker) {
         marker.setIcon({
             url: "../assets/images/marker_hover.svg",
-            scaledSize: new google.maps.Size(70, 70),
+            scaledSize: new google.maps.Size(60, 60),
             labelOrigin: new google.maps.Point(40, -25),
         });
     }
@@ -27,7 +27,7 @@ export class MarkerLabelAndIcons {
     markerIconClicked(marker) {
         marker.setIcon({
             url: "../assets/images/marker_click.svg",
-            scaledSize: new google.maps.Size(70, 70),
+            scaledSize: new google.maps.Size(60, 60),
             labelOrigin: new google.maps.Point(40, -25),
         });
     }

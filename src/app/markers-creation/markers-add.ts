@@ -1,4 +1,4 @@
-import MarkerClusterer from '@googlemaps/markerclustererplus';
+import { MarkerClusterer } from "@googlemaps/markerclusterer";
 
 import { MarkerDataSeed } from '../database-seeding/database-markers-data-seed';
 
@@ -21,8 +21,11 @@ export function addMarkerToMap(map) {
             draggable: false,
             optimized: false,
             animation: google.maps.Animation.DROP,
+            
         });
-        
+
+
+               
         markerEvents.markerInfoWindow(marker, marker_data, map);
         markerEvents.markerMouseOver(marker);
         markerEvents.markerMouseOut(marker);
@@ -30,9 +33,7 @@ export function addMarkerToMap(map) {
         return marker;
     });
 
-    new MarkerClusterer(map, markers, {
-        imagePath: "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m"
-    });
+    new MarkerClusterer({map, markers});
 
 
 }
