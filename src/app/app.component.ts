@@ -22,8 +22,8 @@ export class AppComponent {
 	
 	mapInitializer(): void {
 		this.map = new google.maps.Map(this.gmap.nativeElement,{
-			center: new google.maps.LatLng(43.0806892, 19.5989368),
-			zoom: 9,
+			center: new google.maps.LatLng(42.99603931107363, 19.863259815559704),
+			zoom: 8.5,
 			styles: mapStyling
 			
 		});

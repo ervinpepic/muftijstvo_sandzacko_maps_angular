@@ -51,7 +51,6 @@ export class MarkerEvents {
             marker.setAnimation(null);
         } else {
             marker.setAnimation(google.maps.Animation.BOUNCE);
-            this.markerLabelAndIcons.markerIconClicked(marker);
             setTimeout(function () {
                 marker.setAnimation(null);
             }, 2000); // current maps duration of one bounce (v3.13)

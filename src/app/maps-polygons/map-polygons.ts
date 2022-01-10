@@ -113,7 +113,7 @@ export class PolygonsBoundaries {
             fillOpacity: 0.43,
         });
         rozajePolygon.setMap(map);
-        zoomChange(map, rozajePolygon);
+        // zoomChange(map, rozajePolygon);
     }
     beranePolygon(map) {
         let beranePolygon = new google.maps.Polygon({

@@ -24,13 +24,13 @@ export class MarkerLabelAndIcons {
         });
     }
 
-    markerIconClicked(marker) {
-        marker.setIcon({
-            url: "../assets/images/marker_click.svg",
-            scaledSize: new google.maps.Size(60, 60),
-            labelOrigin: new google.maps.Point(40, -25),
-        });
-    }
+    // markerIconClicked(marker) {
+    //     marker.setIcon({
+    //         url: "../assets/images/marker_click.svg",
+    //         scaledSize: new google.maps.Size(60, 60),
+    //         labelOrigin: new google.maps.Point(40, -25),
+    //     });
+    // }
     markerLabelDefault(marker_data) {
         let markerLabel = {
             text: marker_data.placeName,
@@ -54,7 +54,6 @@ export class MarkerLabelAndIcons {
     }
 
     markerMouseClick(marker) {
-        this.markerIconClicked(marker);
         let label = marker.getLabel();
         label.className = "label";
     }
