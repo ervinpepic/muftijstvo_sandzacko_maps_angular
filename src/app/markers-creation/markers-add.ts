@@ -15,7 +15,7 @@ export function addMarkerToMap(map) {
 
     const markers = markerDataSeed.map(marker_data => {
         let marker = new google.maps.Marker({
-            position: new google.maps.LatLng(marker_data.latLng.lat, marker_data.latLng.lng),
+            position: new google.maps.LatLng(marker_data.markerPosition.lat, marker_data.markerPosition.lng),
             icon: markerLabelAndIcons.markerIconDefaultCreate(),
             label: markerLabelAndIcons.markerLabelDefault(marker_data),
             draggable: false,

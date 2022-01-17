@@ -7,27 +7,27 @@ export function infoWindowStyling(markerInfo) {
                "<h4 class='mb-2'>" + markerInfo.placeName + "</h4>"  +
               "<hr>" +
               "<p class='lead'><span><strong><i class='fa-solid fa-calendar-days'></i> Godina izgradnje: </strong></span>" +
-                markerInfo.year_foundation +
+                markerInfo.yearFounded +
               " godine</p>" +
               "<p class='lead'><span><strong><i class='fa-regular fa-map'></i> Katastarska parcela: </strong></span>" +
-                markerInfo.katastar_parcela +
+                markerInfo.cadastralParcelNumber +
               "</p>" +
               "<p class='lead'><span><strong><i class='fa-solid fa-city'></i> Katastarska opština: </strong></span>" +
-                markerInfo.katastar_opstina +
+                markerInfo.cadastarMunicipality +
               "</p>" +
               "<p class='lead'><span><strong><i class='fa-solid fa-map-location-dot'></i> Površina parcele: </strong></span>" +
-                markerInfo.pov_vakuf_parcele + " m<sup>2</sup>" +
+                markerInfo.areaSize + " m<sup>2</sup>" +
               "</p>" +
               "<p class='lead'><span><strong><i class='fa-solid fa-scroll'></i> List nepokretnosti: </strong></span>" +
-                markerInfo.list_nepokretnosti +
+                markerInfo.realEstateNumber +
               "</p>" +
-              "<p class='lead'><span><strong><i class='fa-solid fa-road'></i> Ulica: </strong></span>" + markerInfo.naziv_ulice + "</p>" +
+              "<p class='lead'><span><strong><i class='fa-solid fa-road'></i> Ulica: </strong></span>" + markerInfo.streetName + "</p>" +
               "<hr class='d-none d-sm-block d-md-none'>" +
             "</div>" + 
             "<div class='col'>"+ 
               "<p class='lead mt-2 mb-2'><span><strong><i class='fa-solid fa-image'></i> Slika objekta / Parcele: </strong></span>" + "</p>" + 
               
-              "<img src='" + markerInfo.img + "' class='img-fluid img-thumbnail' width='100%' height='auto'" +   
+              "<img src='" + markerInfo.image + "' class='img-fluid img-thumbnail' width='100%' height='auto'" +   
             "</div>" +
           "</div>" +
         "</div>"
