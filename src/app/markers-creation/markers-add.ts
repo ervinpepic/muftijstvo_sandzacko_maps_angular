@@ -11,7 +11,7 @@ export function addMarkerToMap(map) {
     let markerDataSeed = MarkerDataSeed;
     let markerEvents = new MarkerEvents();
     let markerLabelAndIcons = new MarkerLabelAndIcons();
-    
+
 
     const markers = markerDataSeed.map(marker_data => {
         let marker = new google.maps.Marker({
@@ -25,15 +25,15 @@ export function addMarkerToMap(map) {
         });
 
 
-               
+
         markerEvents.markerInfoWindow(marker, marker_data, map);
         markerEvents.markerMouseOver(marker);
         markerEvents.markerMouseOut(marker);
 
         return marker;
     });
-
-    new MarkerClusterer({map, markers});
+    
+    new MarkerClusterer({ map, markers });
 
 
 }
