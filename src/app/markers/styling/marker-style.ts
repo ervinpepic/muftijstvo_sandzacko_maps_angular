@@ -1,5 +1,5 @@
-export class MarkerLabelAndIcons {
-    
+export class StylingMarkers {
+
     markerIconDefaultCreate() {
         let icon = {
             url: "../assets/images/marker_main.svg",
@@ -24,13 +24,6 @@ export class MarkerLabelAndIcons {
         });
     }
 
-    // markerIconClicked(marker) {
-    //     marker.setIcon({
-    //         url: "../assets/images/marker_click.svg",
-    //         scaledSize: new google.maps.Size(60, 60),
-    //         labelOrigin: new google.maps.Point(40, -25),
-    //     });
-    // }
     markerLabelDefault(marker_data) {
         let markerLabel = {
             text: marker_data.placeName,
@@ -42,7 +35,7 @@ export class MarkerLabelAndIcons {
     ////////////////////////////////////////////////////////
 
     markerMouseOver(marker) {
-       this.markerIconLarge(marker);
+        this.markerIconLarge(marker);
         let label = marker.getLabel();
         label.className = "marker-label-mouseover"
     };

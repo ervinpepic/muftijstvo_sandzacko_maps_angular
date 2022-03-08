@@ -1,22 +1,22 @@
-import { MarkerLabelAndIcons } from '../markers-styling/marker-label-icons';
-import { infoWindowStyling } from '../markers-styling/markers-infoWindow-styling';
+import { StylingMarkers } from '../styling/marker-style';
+import { infoWindowStyling } from '../../info-window/infoWindowStyle';
 
 
 export class MarkerEvents {
-
-    markerLabelAndIcons = new MarkerLabelAndIcons();
-    inforObj = [];
+    infoWindowClosing = [];
     infoWindowStyling = infoWindowStyling;
 
-    markerInfoWindow(marker, markerInfo, map) {
+    markerStyling = new StylingMarkers();
+
+    markerInfoWindow(marker, markerData, map) {
         let infoWindow = new google.maps.InfoWindow();
         marker.addListener("click", () => {
             this.closeOtherInfo();
             this.markerBounce(marker);
 
-            infoWindow.setContent(this.infoWindowStyling(markerInfo));
+            infoWindow.setContent(this.infoWindowStyling(markerData));
             infoWindow.open(map, marker);
-            this.inforObj[0] = infoWindow;
+            this.infoWindowClosing[0] = infoWindow;
             map.panTo(marker.getPosition());
             
         });
@@ -36,13 +36,13 @@ export class MarkerEvents {
 
     markerMouseOver(marker) {
         marker.addListener("mouseover", () => {
-            this.markerLabelAndIcons.markerMouseOver(marker);
+            this.markerStyling.markerMouseOver(marker);
         });
     }
 
     markerMouseOut(marker) {
         marker.addListener("mouseout", () => {
-            this.markerLabelAndIcons.markerMouseOut(marker);
+            this.markerStyling.markerMouseOut(marker);
         });
     }
 
@@ -58,13 +58,13 @@ export class MarkerEvents {
     }
 
     closeOtherInfo() {
-        if (this.inforObj.length > 0) {
+        if (this.infoWindowClosing.length > 0) {
             // detach the info window from the marker undocumented in google API
-            this.inforObj[0].set("marker", null);
+            this.infoWindowClosing[0].set("marker", null);
             // close it
-            this.inforObj[0].close();
+            this.infoWindowClosing[0].close();
             // blank the array
-            this.inforObj.length = 0;
+            this.infoWindowClosing.length = 0;
         }
     }
 

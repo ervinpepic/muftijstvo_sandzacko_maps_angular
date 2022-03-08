@@ -5,8 +5,8 @@ import { MarkerDataSeed } from './database/database-seed';
 
 import { PolygonsBoundaries } from './polygons/map-polygons';
 
-import { MarkerLabelAndIcons } from './markers/markers-styling/marker-label-icons';
-import { MarkerEvents } from './markers/markers-events/marker-events-main';
+import { StylingMarkers } from './markers/styling/marker-style';
+import { MarkerEvents } from './markers/events/marker-events';
 import { mapStyling } from './map/mapStyle';
 
 @Component({
@@ -26,7 +26,7 @@ export class AppComponent {
 	gmarkers: any = [];
 
 	markerEvents = new MarkerEvents();
-	markerLabelAndIcons = new MarkerLabelAndIcons();
+	markerStyling = new StylingMarkers();
 	polygons = new PolygonsBoundaries();
 
 
@@ -45,18 +45,18 @@ export class AppComponent {
 	}
 
 	addMarkerToMap(map) {
-		const markers = this.markerData.map(marker_data => {
+		const markers = this.markerData.map(extractedMarkerData => {
 			const marker = new google.maps.Marker({
-				...marker_data,
-				position: new google.maps.LatLng(marker_data.position),
-				icon: this.markerLabelAndIcons.markerIconDefaultCreate(),
-				label: this.markerLabelAndIcons.markerLabelDefault(marker_data),
+				...extractedMarkerData,
+				position: new google.maps.LatLng(extractedMarkerData.position),
+				icon: this.markerStyling.markerIconDefaultCreate(),
+				label: this.markerStyling.markerLabelDefault(extractedMarkerData),
 				draggable: false,
 				optimized: false,
 				animation: google.maps.Animation.DROP,
 			});
 
-			this.markerEvents.markerInfoWindow(marker, marker_data, map);
+			this.markerEvents.markerInfoWindow(marker, extractedMarkerData, map);
 			this.markerEvents.markerMouseOver(marker);
 			this.markerEvents.markerMouseOut(marker);
 
