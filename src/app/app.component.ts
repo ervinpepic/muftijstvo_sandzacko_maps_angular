@@ -9,8 +9,6 @@ import { MarkerLabelAndIcons } from './markers/markers-styling/marker-label-icon
 import { MarkerEvents } from './markers/markers-events/marker-events-main';
 import { mapStyling } from './map/mapStyle';
 
-
-
 @Component({
 	selector: 'app-root',
 	templateUrl: './app.component.html',
@@ -18,7 +16,7 @@ import { mapStyling } from './map/mapStyle';
 })
 export class AppComponent {
 	@ViewChild('mapContainer', { static: false }) gmap: ElementRef;
-	
+
 	title = 'Muftijstvo Sandzacko Mape Vakufa';
 
 	map?: google.maps.Map;
@@ -31,9 +29,6 @@ export class AppComponent {
 	markerLabelAndIcons = new MarkerLabelAndIcons();
 	polygons = new PolygonsBoundaries();
 
-	ngAfterViewInit(): void {
-		this.mapInitializer();
-	}
 
 	mapInitializer(): void {
 		this.map = new google.maps.Map(this.gmap.nativeElement, {
@@ -45,9 +40,13 @@ export class AppComponent {
 		this.polygons.drawPolgygons(this.map);
 	}
 
+	ngAfterViewInit(): void {
+		this.mapInitializer();
+	}
+
 	addMarkerToMap(map) {
 		const markers = this.markerData.map(marker_data => {
-			let marker = new google.maps.Marker({
+			const marker = new google.maps.Marker({
 				...marker_data,
 				position: new google.maps.LatLng(marker_data.position),
 				icon: this.markerLabelAndIcons.markerIconDefaultCreate(),
