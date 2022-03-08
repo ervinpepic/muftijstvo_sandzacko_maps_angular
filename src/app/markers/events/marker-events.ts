@@ -1,5 +1,5 @@
 import { StylingMarkers } from '../styling/marker-style';
-import { infoWindowStyling } from '../../info-window/infoWindowStyle';
+import { infoWindowStyling } from '../../info-window/info-window-style';
 
 
 export class MarkerEvents {

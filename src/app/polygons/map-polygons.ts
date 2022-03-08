@@ -13,7 +13,7 @@ import { rozajePolygonDelimiter } from './sandzak/rozaje';
 import { sjenicaPolygonDelimiter } from './sandzak/sjenica';
 import { tutinPolygonDelimiter } from './sandzak/tutin';
 
-import { zoomChange } from './maps-polygons-zoomChange';
+import { zoomChange } from './zoom-change';
 
 export class PolygonsBoundaries {
     noviPazarPolygon(map) {

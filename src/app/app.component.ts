@@ -7,7 +7,7 @@ import { PolygonsBoundaries } from './polygons/map-polygons';
 
 import { StylingMarkers } from './markers/styling/marker-style';
 import { MarkerEvents } from './markers/events/marker-events';
-import { mapStyling } from './map/mapStyle';
+import { mapStyling } from './map/map-style';
 
 @Component({
 	selector: 'app-root',
