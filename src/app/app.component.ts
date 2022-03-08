@@ -1,9 +1,14 @@
-
 import { Component, ViewChild, ElementRef } from '@angular/core';
+import { MarkerClusterer } from '@googlemaps/markerclusterer';
 
-import { addMarkerToMap } from './markers-creation/markers-add';
-import { mapStyling } from './map-styling/map-style-json';
-import { PolygonsBoundaries } from './maps-polygons/map-polygons';
+import { MarkerDataSeed } from './database/database-seed';
+
+import { PolygonsBoundaries } from './polygons/map-polygons';
+
+import { MarkerLabelAndIcons } from './markers/markers-styling/marker-label-icons';
+import { MarkerEvents } from './markers/markers-events/marker-events-main';
+import { mapStyling } from './map/mapStyle';
+
 
 
 @Component({
@@ -12,28 +17,55 @@ import { PolygonsBoundaries } from './maps-polygons/map-polygons';
 	styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-	title = 'MuftijstvoSandzackoMaps';
-	
 	@ViewChild('mapContainer', { static: false }) gmap: ElementRef;
-	map?: google.maps.Map;
-	markers = addMarkerToMap;
-	polygons = new PolygonsBoundaries();
-
 	
-	mapInitializer(): void {
-		this.map = new google.maps.Map(this.gmap.nativeElement,{
-			center: new google.maps.LatLng(42.99603931107363, 19.863259815559704),
-			zoom: 8.5,
-			styles: mapStyling
-			
-		});
-		this.markers(this.map);
-		this.polygons.drawPolgygons(this.map);
-	}
+	title = 'Muftijstvo Sandzacko Mape Vakufa';
+
+	map?: google.maps.Map;
+	mapStyle = mapStyling;
+
+	markerData = MarkerDataSeed;
+	gmarkers: any = [];
+
+	markerEvents = new MarkerEvents();
+	markerLabelAndIcons = new MarkerLabelAndIcons();
+	polygons = new PolygonsBoundaries();
 
 	ngAfterViewInit(): void {
 		this.mapInitializer();
-		
+	}
+
+	mapInitializer(): void {
+		this.map = new google.maps.Map(this.gmap.nativeElement, {
+			center: new google.maps.LatLng(42.99603931107363, 19.863259815559704),
+			zoom: 8.5,
+			styles: this.mapStyle,
+		});
+		this.addMarkerToMap(this.map);
+		this.polygons.drawPolgygons(this.map);
+	}
+
+	addMarkerToMap(map) {
+		const markers = this.markerData.map(marker_data => {
+			let marker = new google.maps.Marker({
+				...marker_data,
+				position: new google.maps.LatLng(marker_data.position),
+				icon: this.markerLabelAndIcons.markerIconDefaultCreate(),
+				label: this.markerLabelAndIcons.markerLabelDefault(marker_data),
+				draggable: false,
+				optimized: false,
+				animation: google.maps.Animation.DROP,
+			});
+
+			this.markerEvents.markerInfoWindow(marker, marker_data, map);
+			this.markerEvents.markerMouseOver(marker);
+			this.markerEvents.markerMouseOut(marker);
+
+			return marker;
+		});
+
+		new MarkerClusterer({ map, markers });
+
 	}
 
 }
