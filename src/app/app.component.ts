@@ -18,7 +18,6 @@ export class AppComponent {
 	@ViewChild('mapContainer', { static: false }) gmap: ElementRef;
 
 	title = 'Muftijstvo Sandzacko Mape Vakufa';
-
 	map?: google.maps.Map;
 	mapStyle = mapStyling;
 
@@ -36,7 +35,7 @@ export class AppComponent {
 			zoom: 8.5,
 			styles: this.mapStyle,
 		});
-		this.addMarkerToMap(this.map);
+		this.addMarkerToMap();
 		this.polygons.drawPolgygons(this.map);
 	}
 
@@ -44,26 +43,38 @@ export class AppComponent {
 		this.mapInitializer();
 	}
 
-	addMarkerToMap(map) {
-		const markers = this.markerData.map(extractedMarkerData => {
+	addMarkerToMap() {
+		this.markerData.map(extractedMarkerData => {
 			const marker = new google.maps.Marker({
 				...extractedMarkerData,
 				position: new google.maps.LatLng(extractedMarkerData.position),
 				icon: this.markerStyling.markerIconDefaultCreate(),
-				label: this.markerStyling.markerLabelDefault(extractedMarkerData),
+				// label: this.markerStyling.markerLabelDefault(extractedMarkerData),
 				draggable: false,
 				optimized: false,
 				animation: google.maps.Animation.DROP,
 			});
-
-			this.markerEvents.markerInfoWindow(marker, extractedMarkerData, map);
 			this.markerEvents.markerMouseOver(marker);
+			this.markerEvents.markerInfoWindow(marker, extractedMarkerData, this.map);
 			this.markerEvents.markerMouseOut(marker);
-
-			return marker;
+			marker.setMap(this.map);
+			this.gmarkers.push(marker);
+			return marker
 		});
 
-		new MarkerClusterer({ map, markers });
+		// new MarkerClusterer({ this.map, markers });
+
+	}
+
+	onSearchCustomer(event: any) {
+		for (let marker of this.gmarkers) {
+			if (event.target.value === marker.placeFilter) {
+				marker.setVisible(true)
+			}
+			else {
+				marker.setVisible(false)
+			}
+		}
 
 	}
 
