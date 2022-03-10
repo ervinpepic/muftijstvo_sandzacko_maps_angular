@@ -1,12 +1,16 @@
+<!-- <select (keyup)="onChange($event)">
+  <option selected>Filtriraj Pretragu</option>
+  <option value="SjenicaDataFilter">Vakufi u Sjenici</option>
+  <option value="NoviPazarDataFilter">Vakufi u Novom Pazaru</option>
+</select> -->
+<!-- <li *ngFor="let marker of gmarkers">
+  <p>{{ marker.placeName }}</p>
+</li> -->
 
+<input type="text" name="searchValue" [(ngModel)]="searchValue" (ngModelChange)="onChange($event)" placeholder="Naziv | mjesto vakufa"/>
 <div class="container">
     <h3 class="text-center mb-5 mt-5">Muftijstvo sandžačko | mape vakufa</h3>
     <div class="row">
-      <select (change)="onSearchCustomer($event)">
-        <option selected>Filtriraj Pretragu</option>
-        <option value="SjenicaDataFilter">Vakufi u Sjenici</option>
-        <option value="NoviPazarDataFilter">Vakufi u Novom Pazaru</option>
-      </select>
       <div #mapContainer id="map-canvas"></div>
     </div>
 </div>
