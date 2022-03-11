@@ -1,36 +1,4 @@
 /* You can add global styles to this file, and also import other style files */
-.infowindow {
-  max-height: max-content;
-  max-width: max-content;
-}
-
-.label {
-  font-family: "Raleway", sans-serif;
-  font-size: 12pt !important;
-  font-weight: 300;
-  color: #000000 !important;
-  background: #ffffff;
-  border-radius: 5px;
-  padding: 5px;
-}
-
-.marker-label-mouseover {
-  font-family: "Raleway", sans-serif;
-  font-weight: 300;
-  font-size: 14pt !important;
-  color: #ffffff !important;
-  background: #0d7070;
-  border-radius: 5px;
-  padding: 5px;
-}
-
-.label-clicked {
-  display: none;
-}
-
-img {
-  border-radius: 3%;
-}
 body {
   background-image: url("/assets/images/info-window-background.png");
   background-attachment: fixed;

@@ -1,5 +1,4 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { MarkerClusterer } from '@googlemaps/markerclusterer';
 
 import { MarkerDataSeed } from './database/database-seed';
 import { PolygonsBoundaries } from './polygons/map-polygons';
@@ -15,13 +14,15 @@ import { mapStyling } from './map/map-style';
 })
 export class AppComponent {
 	@ViewChild('mapContainer', { static: false }) gmap: ElementRef;
-	title = 'Muftijstvo Sandzacko Mape Vakufa';
 	
-	searchValue?: string;
+	title = 'Muftijstvo Sandzacko Mape Vakufa';
 
-	gmarkers: Array<any> = [];
+	searchWord?: string = '';
+	allMarkers: Array<any> = [];
+
 	map?: google.maps.Map;
 	mapStyle = mapStyling;
+	mapCenter = new google.maps.LatLng(42.99603931107363, 19.863259815559704);
 
 	markerData = MarkerDataSeed;
 	markerEvents = new MarkerEvents();
@@ -31,8 +32,8 @@ export class AppComponent {
 
 	mapInitializer(): void {
 		this.map = new google.maps.Map(this.gmap.nativeElement, {
-			center: new google.maps.LatLng(42.99603931107363, 19.863259815559704),
-			zoom: 8.5,
+			center: this.mapCenter,
+			zoom: 9,
 			styles: this.mapStyle,
 		});
 		this.addMarkerToMap();
@@ -49,28 +50,40 @@ export class AppComponent {
 				...extractedMarkerData,
 				position: new google.maps.LatLng(extractedMarkerData.position),
 				icon: this.markerStyling.markerIconDefaultCreate(),
-				// label: this.markerStyling.markerLabelDefault(extractedMarkerData),
+				label: '',
 				draggable: false,
 				optimized: false,
 				animation: google.maps.Animation.DROP,
 			});
-			this.markerEvents.markerMouseOver(marker);
-			this.markerEvents.markerInfoWindow(marker, extractedMarkerData, this.map);
-			this.markerEvents.markerMouseOut(marker);
 			marker.setMap(this.map);
+			this.allMarkers.push(marker);
 
-			this.gmarkers.push(marker);
+			this.markerEvents.markerInfoWindow(marker, extractedMarkerData, this.map);
+
+			this.markerEvents.markerMouseOver(marker);
+			this.markerEvents.markerMouseOut(marker);
+
+			// return marker
 
 		});
-		// new MarkerClusterer({ this.map, markers });
+		// new MarkerClusterer({ map, markers });
 
 	}
 
 	onChange(event: any): any {
-		if (this.gmarkers)
-			return this.gmarkers.filter(markerData => {
-				if (markerData.placeName.indexOf(event) != -1 || markerData.setVisible(false)) {
-					markerData.setVisible(true)
+		if (this.searchWord == '' && event == '') {
+			this.map.setCenter(this.mapCenter)
+			this.map.setZoom(9);
+		}
+		if (this.allMarkers && this.searchWord)
+			return this.allMarkers.filter(marker => {
+				if (marker.placeName.toLowerCase().indexOf(event.toLowerCase()) != -1) {
+					marker.setVisible(true)
+					this.map.setZoom(9.2)
+				}
+				else {
+					marker.setVisible(false)
+					return this.allMarkers;
 				}
 			});
 	}

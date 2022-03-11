@@ -4,3 +4,24 @@
   height: 100%;
   border-radius: 2%;
 }
+
+.infowindow {
+  max-height: max-content;
+  max-width: max-content;
+}
+
+.label {
+  background-color: #0d7070 !important;
+  border-radius: 5px !important;
+  padding: 5px !important;
+}
+
+.marker-label-mouseover {
+  background-color: #0d7070 !important;
+  border-radius: 5px !important;
+  padding: 5px !important;
+}
+
+img {
+  border-radius: 3%;
+}

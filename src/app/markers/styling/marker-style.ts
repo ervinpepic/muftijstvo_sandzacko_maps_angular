@@ -23,33 +23,17 @@ export class StylingMarkers {
             labelOrigin: new google.maps.Point(40, -25),
         });
     }
-
-    markerLabelDefault(marker_data) {
-        let markerLabel = {
-            text: marker_data.placeName,
-            className: "label",
-        }
-        return markerLabel;
-    }
     ////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////
 
     markerMouseOver(marker) {
         this.markerIconLarge(marker);
-        let label = marker.getLabel();
-        label.className = "marker-label-mouseover"
     };
 
     markerMouseOut(marker) {
         this.markerIconDefault(marker);
-        let label = marker.getLabel();
-        label.className = "label";
     }
 
-    markerMouseClick(marker) {
-        let label = marker.getLabel();
-        label.className = "label";
-    }
 
 }
 
