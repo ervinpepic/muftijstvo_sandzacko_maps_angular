@@ -1,16 +1,32 @@
-<!-- <select (keyup)="onChange($event)">
-  <option selected>Filtriraj Pretragu</option>
-  <option value="SjenicaDataFilter">Vakufi u Sjenici</option>
-  <option value="NoviPazarDataFilter">Vakufi u Novom Pazaru</option>
-</select> -->
-<!-- <li *ngFor="let marker of gmarkers">
-  <p>{{ marker.placeName }}</p>
-</li> -->
-
-<input type="text" name="searchWord" [(ngModel)]="searchWord" (ngModelChange)="onChange($event)" placeholder="Naziv | mjesto vakufa"/>
 <div class="container">
-    <h3 class="text-center mb-5 mt-5">Muftijstvo sandžačko | mape vakufa</h3>
-    <div class="row">
-      <div #mapContainer id="map-canvas"></div>
-    </div>
+  <h3 class="text-center mb-5 mt-5">Muftijstvo sandžačko | mape vakufa</h3>
+  <div class="row">
+    <nav class="navbar" style="background-color: #52a77a; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+      <div class="container-fluid">
+        <form class="d-flex">
+          <a class="navbar-brand" href="#" style="margin-left: -15px !important;">
+            <img src="../assets/images/logo_muftijstvo.svg" alt="" width="30" height="24">
+          </a>
+          <input class="form-control me-2" type="search" placeholder="Pretraži Vakufe" aria-label="Search"
+            name="searchWord" [(ngModel)]="searchWord" (ngModelChange)="searchFilter($event)">
+        </form>
+        <form class="d-flex">
+          <select class="form-select">
+            <option selected>Kategorija</option>
+            <option>Džamije</option>
+            <option>Livade</option>
+            <option>Objekti</option>
+          </select>
+          <select class="form-select ms-2">
+            <option selected>Mjesto</option>
+            <option value="NoviPazarDataFilter">Novi Pazar</option>
+            <option value="SjenicaDataFilter">Sjenica</option>
+            <option>Tutin</option>
+            <option>Rožaje</option>
+          </select>
+        </form>
+      </div>
+    </nav>
+    <div #mapContainer id="map-canvas"></div>
+  </div>
 </div>

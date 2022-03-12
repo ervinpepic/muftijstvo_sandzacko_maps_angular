@@ -14,7 +14,7 @@ import { mapStyling } from './map/map-style';
 })
 export class AppComponent {
 	@ViewChild('mapContainer', { static: false }) gmap: ElementRef;
-	
+
 	title = 'Muftijstvo Sandzacko Mape Vakufa';
 
 	searchWord?: string = '';
@@ -70,12 +70,14 @@ export class AppComponent {
 
 	}
 
-	onChange(event: any): any {
-		if (this.searchWord == '' && event == '') {
-			this.map.setCenter(this.mapCenter)
-			this.map.setZoom(9);
+	searchFilter(event: any): any {
+		if (this.searchWord === '' || event === '') {
+			for (let marker of this.allMarkers) {
+				marker.setVisible(true)
+				this.map.setZoom(9)
+			}
 		}
-		if (this.allMarkers && this.searchWord)
+		else if (this.allMarkers && this.searchWord)
 			return this.allMarkers.filter(marker => {
 				if (marker.placeName.toLowerCase().indexOf(event.toLowerCase()) != -1) {
 					marker.setVisible(true)
@@ -83,9 +85,11 @@ export class AppComponent {
 				}
 				else {
 					marker.setVisible(false)
-					return this.allMarkers;
 				}
 			});
+		else {
+			return this.allMarkers
+		}
 	}
 
 }
