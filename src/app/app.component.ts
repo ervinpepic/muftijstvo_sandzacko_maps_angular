@@ -33,7 +33,7 @@ export class AppComponent {
 	mapInitializer(): void {
 		this.map = new google.maps.Map(this.gmap.nativeElement, {
 			center: this.mapCenter,
-			zoom: 9,
+			zoom: 8.2,
 			styles: this.mapStyle,
 		});
 		this.addMarkerToMap();
@@ -59,37 +59,30 @@ export class AppComponent {
 			this.allMarkers.push(marker);
 
 			this.markerEvents.markerInfoWindow(marker, extractedMarkerData, this.map);
-
 			this.markerEvents.markerMouseOver(marker);
 			this.markerEvents.markerMouseOut(marker);
-
-			// return marker
-
 		});
-		// new MarkerClusterer({ map, markers });
-
 	}
 
-	searchFilter(event: any): any {
+	searchMarkersFilter(event: any): any {
 		if (this.searchWord === '' || event === '') {
 			for (let marker of this.allMarkers) {
-				marker.setVisible(true)
-				this.map.setZoom(9)
+				marker.setVisible(true);
+				this.map.setZoom(8.2);
+				this.map.setCenter(this.mapCenter);
 			}
 		}
 		else if (this.allMarkers && this.searchWord)
-			return this.allMarkers.filter(marker => {
+			return this.allMarkers.filter((marker) => {
 				if (marker.placeName.toLowerCase().indexOf(event.toLowerCase()) != -1) {
-					marker.setVisible(true)
-					this.map.setZoom(9.2)
+					marker.setVisible(true);
+					this.map.setZoom(9.2);
 				}
 				else {
-					marker.setVisible(false)
+					marker.setVisible(false);
 				}
 			});
-		else {
-			return this.allMarkers
-		}
+		return this.allMarkers;
 	}
 
 }
