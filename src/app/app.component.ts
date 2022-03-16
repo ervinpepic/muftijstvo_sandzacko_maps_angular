@@ -23,6 +23,7 @@ export class AppComponent {
 	map?: google.maps.Map;
 	mapStyle = mapStyling;
 	mapCenter = new google.maps.LatLng(42.99603931107363, 19.863259815559704);
+	mapZoom = 8.9
 
 	markerData = MarkerDataSeed;
 	markerEvents = new MarkerEvents();
@@ -33,7 +34,7 @@ export class AppComponent {
 	mapInitializer(): void {
 		this.map = new google.maps.Map(this.gmap.nativeElement, {
 			center: this.mapCenter,
-			zoom: 8.2,
+			zoom: this.mapZoom,
 			styles: this.mapStyle,
 		});
 		this.addMarkerToMap();
@@ -65,24 +66,40 @@ export class AppComponent {
 	}
 
 	searchMarkersFilter(event: any): any {
-		if (this.searchWord === '' || event === '') {
+		let bounds = new google.maps.LatLngBounds();
+
+		if (this.searchWord === '' || event === '')
 			for (let marker of this.allMarkers) {
 				marker.setVisible(true);
-				this.map.setZoom(8.2);
+				this.map.setZoom(this.mapZoom);
 				this.map.setCenter(this.mapCenter);
 			}
-		}
 		else if (this.allMarkers && this.searchWord)
 			return this.allMarkers.filter((marker) => {
 				if (marker.placeName.toLowerCase().indexOf(event.toLowerCase()) != -1) {
 					marker.setVisible(true);
-					this.map.setZoom(9.2);
+					bounds.extend(marker.getPosition());
 				}
 				else {
 					marker.setVisible(false);
 				}
+				this.map.fitBounds(bounds);
 			});
 		return this.allMarkers;
+	}
+
+	selectMarkerFilter(event: any) {
+		let bounds = new google.maps.LatLngBounds();
+		for (let marker of this.allMarkers) {
+			if (marker.placeFilter == event.target.value || event.target.value === "") {
+				marker.setVisible(true);
+				bounds.extend(marker.getPosition());
+			}
+			else {
+				marker.setVisible(false);
+			}
+			this.map.fitBounds(bounds);
+		}
 	}
 
 }
