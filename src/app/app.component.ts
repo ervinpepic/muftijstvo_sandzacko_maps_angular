@@ -15,7 +15,7 @@ import { mapStyling } from './map/map-style';
 export class AppComponent {
 	@ViewChild('mapContainer', { static: false }) gmap: ElementRef;
 
-	title = 'Muftijstvo Sandzacko Mape Vakufa';
+	title = 'Muftijstvo Sandžačko Mape Vakufa';
 
 	searchWord?: string = '';
 	allMarkers: Array<any> = [];
@@ -23,7 +23,7 @@ export class AppComponent {
 	map?: google.maps.Map;
 	mapStyle = mapStyling;
 	mapCenter = new google.maps.LatLng(42.99603931107363, 19.863259815559704);
-	mapZoom = 8.9
+	mapZoom = 9
 
 	markerData = MarkerDataSeed;
 	markerEvents = new MarkerEvents();
@@ -37,7 +37,7 @@ export class AppComponent {
 			zoom: this.mapZoom,
 			styles: this.mapStyle,
 		});
-		this.addMarkerToMap();
+		this.addMarkers();
 		this.polygons.drawPolgygons(this.map);
 	}
 
@@ -45,13 +45,12 @@ export class AppComponent {
 		this.mapInitializer();
 	}
 
-	addMarkerToMap() {
+	addMarkers() {
 		return this.markerData.map(extractedMarkerData => {
 			const marker = new google.maps.Marker({
 				...extractedMarkerData,
 				position: new google.maps.LatLng(extractedMarkerData.position),
 				icon: this.markerStyling.markerIconDefaultCreate(),
-				label: '',
 				draggable: false,
 				optimized: false,
 				animation: google.maps.Animation.DROP,
@@ -67,16 +66,24 @@ export class AppComponent {
 
 	searchMarkersFilter(event: any): any {
 		let bounds = new google.maps.LatLngBounds();
-
-		if (this.searchWord === '' || event === '')
-			for (let marker of this.allMarkers) {
+		for (let marker of this.allMarkers) {
+			if (this.searchWord === '' || event === '') {
 				marker.setVisible(true);
 				this.map.setZoom(this.mapZoom);
 				this.map.setCenter(this.mapCenter);
 			}
-		else if (this.allMarkers && this.searchWord)
+		}
+		if (this.allMarkers && this.searchWord) {
 			return this.allMarkers.filter((marker) => {
-				if (marker.placeName.toLowerCase().indexOf(event.toLowerCase()) != -1) {
+				if (this.searchWord === '' || event === '') {
+					marker.setVisible(true);
+					this.map.setZoom(this.mapZoom);
+					this.map.setCenter(this.mapCenter);
+				}
+				else if (
+					marker.placeName.toLowerCase().indexOf(event.toLowerCase()) > -1 ||
+					marker.cadastarMunicipality.toLowerCase().indexOf(event.toLowerCase()) > -1
+				) {
 					marker.setVisible(true);
 					bounds.extend(marker.getPosition());
 				}
@@ -85,6 +92,7 @@ export class AppComponent {
 				}
 				this.map.fitBounds(bounds);
 			});
+		}
 		return this.allMarkers;
 	}
 
