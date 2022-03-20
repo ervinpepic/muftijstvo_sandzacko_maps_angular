@@ -10,3 +10,8 @@ body {
 img {
   border-radius: 15px;
 }
+
+.infowindow {
+  max-height: max-content;
+  max-width: max-content;
+}

@@ -6,11 +6,6 @@
   border-bottom-right-radius: 15px;
 }
 
-.infowindow {
-  max-height: max-content;
-  max-width: max-content;
-}
-
 .navbar-override {
   background-color: #52a77a;
   border-top-left-radius: 15px;
