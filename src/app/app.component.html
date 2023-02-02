@@ -1,5 +1,4 @@
 <div class="container">
-
   <div class="row text-center d-none d-md-block">
     <div class="col">
       <h3 class="mb-5 mt-5">Muftijstvo sandžačko | mape vakufa</h3>
@@ -9,9 +8,9 @@
   <div class="row mt-3">
     <div class="col">
       <nav class="navbar navbar-expand-sm navbar-light navbar-override">
-        <div class="container-fluid ">
+        <div class="container-fluid">
           <a class="navbar-brand">
-            <img src="../assets/images/logo_muftijstvo.svg" alt="logo-muftijstva" width="30" height="30">
+            <img src="../assets/images/logo_muftijstvo.svg" alt="logo-muftijstva" width="30" height="30" />
           </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
             data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -21,24 +20,26 @@
           <div class="collapse navbar-collapse justify-content-start" id="navbarSupportedContent">
             <div class="navbar-nav">
               <input class="form-control m-1" type="search" placeholder="Pretraži Vakufe" aria-label="Search"
-                name="searchWord" [(ngModel)]="searchWord" (ngModelChange)="searchMarkersFilter($event)" />
+                name="searchWord" [(ngModel)]="searchTerm" (ngModelChange)="filterMarkers()" />
             </div>
           </div>
           <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
             <div class="navbar-nav">
-              <select class="form-select m-1">
-                <option selected>Kategorija</option>
-                <option>Džamije</option>
-                <option>Livade</option>
-                <option>Objekti</option>
+              <select class="form-select m-1" [(ngModel)]="selectedObject" (ngModelChange)="filterMarkers()">
+                <option value="" selected>Kategorija</option>
+                <option value="dzamija">Džamije</option>
+                <option value="livada">Livade</option>
+                <option value="groblje">Objekti</option>
               </select>
             </div>
+
             <div class="navbar-nav">
-              <select class="form-select m-1" (change)="selectMarkerFilter($event)">
-                <option value="">Mjesto</option>
+              <select class="form-select m-1" [(ngModel)]="selectedPlace" (ngModelChange)="filterMarkers()">
+                <option value="" selected>Mjesto</option>
                 <option value="NoviPazarDataFilter">Novi Pazar</option>
                 <option value="SjenicaDataFilter">Sjenica</option>
                 <option value="TutinDataFilter">Tutin</option>
+                <option value="PribojDataFilter">Priboj</option>
               </select>
             </div>
           </div>
@@ -52,5 +53,4 @@
       <div #mapContainer id="map-canvas"></div>
     </div>
   </div>
-
 </div>

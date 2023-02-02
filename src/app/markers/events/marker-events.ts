@@ -1,9 +1,8 @@
 import { StylingMarkers } from '../styling/marker-style';
 import { infoWindowStyling } from '../../info-window/info-window-style';
 
-
 export class MarkerEvents {
-    infoWindowClosing = [];
+    infoWindowsClose = [];
     infoWindowStyling = infoWindowStyling;
 
     markerStyling = new StylingMarkers();
@@ -16,7 +15,7 @@ export class MarkerEvents {
 
             infoWindow.setContent(this.infoWindowStyling(markerData));
             infoWindow.open(map, marker);
-            this.infoWindowClosing[0] = infoWindow;
+            this.infoWindowsClose[0] = infoWindow;
             map.panTo(marker.getPosition());
             
         });
@@ -58,13 +57,13 @@ export class MarkerEvents {
     }
 
     closeOtherInfo() {
-        if (this.infoWindowClosing.length > 0) {
+        if (this.infoWindowsClose.length > 0) {
             // detach the info window from the marker undocumented in google API
-            this.infoWindowClosing[0].set("marker", null);
+            this.infoWindowsClose[0].set("marker", null);
             // close it
-            this.infoWindowClosing[0].close();
+            this.infoWindowsClose[0].close();
             // blank the array
-            this.infoWindowClosing.length = 0;
+            this.infoWindowsClose.length = 0;
         }
     }
 

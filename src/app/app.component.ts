@@ -1,12 +1,14 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
+import { MarkerClusterer } from '@googlemaps/markerclusterer';
 
-import { MarkerDataSeed } from './database/database-seed';
-import { PolygonsBoundaries } from './polygons/map-polygons';
-
+//Styling imports
 import { StylingMarkers } from './markers/styling/marker-style';
 import { MarkerEvents } from './markers/events/marker-events';
 import { mapStyling } from './map/map-style';
-import { MarkerClusterer } from '@googlemaps/markerclusterer';
+
+//Data sets import
+import { PolygonsBoundaries } from './polygons/map-polygons';
+import { MarkerDataSeed } from './database/database-seed';
 
 @Component({
   selector: 'app-root',
@@ -14,25 +16,44 @@ import { MarkerClusterer } from '@googlemaps/markerclusterer';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
+  //use for reference child component into the app compoment with gmap
+  //when creating map
   @ViewChild('mapContainer', { static: false }) gmap: ElementRef;
 
+  //class member for title
   title = 'Muftijstvo Sandžačko Mape Vakufa';
 
-  searchWord?: string = '';
-  allMarkers: Array<any> = [];
-  markerClusters: MarkerClusterer;
+  //class members for search and filtering ngModel from App component
+  searchTerm?: string = '';
+  selectedObject?: string = '';
+  selectedPlace?: string = '';
 
+  //Arrays of markers data
+  markers: Array<any> = [];
+  markersCluster: MarkerClusterer;
+
+  //google maps initializatior and setup
   map?: google.maps.Map;
   mapStyle = mapStyling;
   mapCenter = new google.maps.LatLng(42.99603931107363, 19.863259815559704);
   mapZoom = 9;
 
-  markerData = MarkerDataSeed;
+  //raw marker data
+  markersDataArray = MarkerDataSeed;
+
+  //marker styling
   markerEvents = new MarkerEvents();
   markerStyling = new StylingMarkers();
 
+  //map polygon boundaries for Sandzak
   polygons = new PolygonsBoundaries();
 
+  //Use for ViewChild decorator
+  ngAfterViewInit(): void {
+    this.initMap();
+  }
+
+  //google maps initialize
   initMap(): void {
     this.map = new google.maps.Map(this.gmap.nativeElement, {
       center: this.mapCenter,
@@ -43,80 +64,57 @@ export class AppComponent {
     this.polygons.drawPolgygons(this.map);
   }
 
-  ngAfterViewInit(): void {
-    this.initMap();
-  }
-
+  //add all markers
   addMarkers() {
-    this.markerData.map((extractedMarkerData) => {
+    this.markersDataArray.map((markerData) => {
       const marker = new google.maps.Marker({
-        ...extractedMarkerData,
-        position: new google.maps.LatLng(extractedMarkerData.position),
+        ...markerData,
+        position: new google.maps.LatLng(markerData.position),
         icon: this.markerStyling.markerIconDefaultCreate(),
         draggable: false,
         optimized: false,
         animation: google.maps.Animation.DROP,
       });
 
-      this.markerEvents.markerInfoWindow(marker, extractedMarkerData, this.map);
+      //add style to the markers
+      this.markerEvents.markerInfoWindow(marker, markerData, this.map);
       this.markerEvents.markerMouseOver(marker);
       this.markerEvents.markerMouseOut(marker);
 
-      marker.setMap(this.map);
-      this.allMarkers.push(marker);
+      //add extracted markers to the array of markers
+      this.markers.push(marker);
 
+      //return marker after creation
       return marker;
     });
-    this.markerClusters = new MarkerClusterer({
+
+    //create marker clusters
+    this.markersCluster = new MarkerClusterer({
       map: this.map,
-      markers: this.allMarkers,
+      markers: this.markers,
     });
   }
 
-  searchMarkersFilter(event: any): any {
-    let bounds = new google.maps.LatLngBounds();
-    for (let marker of this.allMarkers) {
-      if (this.searchWord === '' || event === '') {
-        marker.setVisible(true);
-        this.map.setZoom(this.mapZoom);
-        this.map.setCenter(this.mapCenter);
+  //filtering markers with multiple params
+  filterMarkers() {
+    const visibleMarkers = [];
+    this.markers.forEach((marker) => {
+      const isVisible =
+        ((!this.selectedPlace || marker.placeFilter === this.selectedPlace) &&
+          (!this.selectedObject || marker.objectType === this.selectedObject) &&
+          (!this.searchTerm ||marker.placeName.toLowerCase()
+            .includes(this.searchTerm.toLowerCase())) ||
+          (!this.searchTerm ||marker.cadastralParcelNumber
+            .toLowerCase().includes(this.searchTerm.toLowerCase()))
+        )
+        marker.setVisible(isVisible);
+      if (isVisible) {
+        visibleMarkers.push(marker);
       }
-    }
-    if (this.allMarkers && this.searchWord) {
-      return this.allMarkers.filter((marker) => {
-        if (this.searchWord === '' || event === '') {
-          marker.setVisible(true);
-          this.map.setZoom(this.mapZoom);
-          this.map.setCenter(this.mapCenter);
-        } else if (
-          marker.placeName.toLowerCase().indexOf(event.toLowerCase()) > -1 ||
-          marker.cadastralParcelNumber
-            .toLowerCase()
-            .indexOf(event.toLowerCase()) > -1 ||
-          marker.cadastarMunicipality
-            .toLowerCase()
-            .indexOf(event.toLowerCase()) > -1
-        ) {
-          marker.setVisible(true);
-          bounds.extend(marker.getPosition());
-        } else {
-          marker.setVisible(false);
-        }
-        this.map.fitBounds(bounds);
-      });
-    }
-    return this.allMarkers;
-  }
+    });
 
-  selectMarkerFilter(event: any) {
-    let bounds = new google.maps.LatLngBounds();
-    this.markerClusters.clearMarkers();
-    const filteredMarkers = this.allMarkers.filter(
-      (marker) =>
-        marker.placeFilter == event.target.value &&
-        bounds.extend(marker.getPosition())
-    );
-    this.markerClusters.addMarkers(filteredMarkers);
-    this.map.fitBounds(bounds);
+    this.markersCluster.clearMarkers();
+    //initialize again after clearing all clusters
+    this.markersCluster.addMarkers(visibleMarkers);
   }
 }
