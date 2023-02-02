@@ -100,14 +100,17 @@ export class AppComponent {
     const visibleMarkers = [];
     this.markers.forEach((marker) => {
       const isVisible =
-        ((!this.selectedPlace || marker.placeFilter === this.selectedPlace) &&
-          (!this.selectedObject || marker.objectType === this.selectedObject) &&
-          (!this.searchTerm ||marker.placeName.toLowerCase()
-            .includes(this.searchTerm.toLowerCase())) ||
-          (!this.searchTerm ||marker.cadastralParcelNumber
-            .toLowerCase().includes(this.searchTerm.toLowerCase()))
-        )
-        marker.setVisible(isVisible);
+        (!this.selectedPlace || marker.placeFilter === this.selectedPlace) &&
+        (!this.selectedObject || marker.objectType === this.selectedObject) &&
+        (!this.searchTerm ||
+          marker.placeName
+            .toLowerCase()
+            .includes(this.searchTerm.toLowerCase()) ||
+          !this.searchTerm ||
+          marker.cadastralParcelNumber
+            .toLowerCase()
+            .includes(this.searchTerm.toLowerCase()));
+      marker.setVisible(isVisible);
       if (isVisible) {
         visibleMarkers.push(marker);
       }

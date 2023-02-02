@@ -20,12 +20,18 @@
           <div class="collapse navbar-collapse justify-content-start" id="navbarSupportedContent">
             <div class="navbar-nav">
               <input class="form-control m-1" type="search" placeholder="Pretraži Vakufe" aria-label="Search"
-                name="searchWord" [(ngModel)]="searchTerm" (ngModelChange)="filterMarkers()" />
+                name="searchWord" 
+                [(ngModel)]="searchTerm" 
+                (ngModelChange)="filterMarkers()" 
+              />
             </div>
           </div>
           <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
             <div class="navbar-nav">
-              <select class="form-select m-1" [(ngModel)]="selectedObject" (ngModelChange)="filterMarkers()">
+              <select class="form-select m-1" 
+                [(ngModel)]="selectedObject" 
+                (ngModelChange)="filterMarkers()"
+              >
                 <option value="" selected>Kategorija</option>
                 <option value="dzamija">Džamije</option>
                 <option value="livada">Livade</option>
@@ -34,7 +40,10 @@
             </div>
 
             <div class="navbar-nav">
-              <select class="form-select m-1" [(ngModel)]="selectedPlace" (ngModelChange)="filterMarkers()">
+              <select class="form-select m-1" 
+                [(ngModel)]="selectedPlace" 
+                (ngModelChange)="filterMarkers()"
+              >
                 <option value="" selected>Mjesto</option>
                 <option value="NoviPazarDataFilter">Novi Pazar</option>
                 <option value="SjenicaDataFilter">Sjenica</option>
