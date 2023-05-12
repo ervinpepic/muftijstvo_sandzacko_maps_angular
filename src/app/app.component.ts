@@ -41,6 +41,7 @@ export class AppComponent {
   //raw marker data
   markersDataArray = MarkerDataSeed;
 
+
   //marker styling
   markerEvents = new MarkerEvents();
   markerStyling = new StylingMarkers();
