@@ -10,46 +10,74 @@
       <nav class="navbar navbar-expand-sm navbar-light navbar-override">
         <div class="container-fluid">
           <a class="navbar-brand">
-            <img src="../assets/images/logo_muftijstvo.svg" alt="logo-muftijstva" width="30" height="30" />
+            <img
+              src="../assets/images/logo_muftijstvo.svg"
+              alt="logo-muftijstva"
+              width="30"
+              height="30"
+            />
           </a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-            aria-label="Toggle navigation">
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
             <span class="navbar-toggler-icon"></span>
           </button>
-          <div class="collapse navbar-collapse justify-content-start" id="navbarSupportedContent">
+          
+          <div
+            class="collapse navbar-collapse justify-content-start"
+            id="navbarSupportedContent"
+          >
             <div class="navbar-nav">
-              <input class="form-control m-1" type="search" placeholder="Pretraži Vakufe" aria-label="Search"
-                name="searchWord" 
-                [(ngModel)]="searchTerm" 
-                (ngModelChange)="filterMarkers()" 
+              <input
+                class="form-control m-1"
+                type="search"
+                placeholder="Pretraži Vakufe"
+                aria-label="Search"
+                name="searchWord"
+                [(ngModel)]="searchTerm"
+                (ngModelChange)="filterMarkers()"
               />
             </div>
           </div>
-          <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+          <div
+            class="collapse navbar-collapse justify-content-end"
+            id="navbarSupportedContent"
+          >
             <div class="navbar-nav">
-              <select class="form-select m-1" 
-                [(ngModel)]="selectedObject" 
+              <select
+                class="form-select m-1"
+                [(ngModel)]="selectedObject"
                 (ngModelChange)="filterMarkers()"
               >
                 <option value="" selected>Kategorija</option>
-                <option value="dzamija">Džamije</option>
-                <option value="livada">Zemljišta</option>
-                <option value="groblje">Groblja</option>
-                <option value="zgrada">Zgrade / objekti</option>
+                <option
+                  *ngFor="let category of markersDataArray | uniqueNamesPipe : 'objectType'"
+                  value="{{ category.objectType }}"
+                >
+                  {{ category.objectType }}
+                </option>
               </select>
             </div>
 
             <div class="navbar-nav">
-              <select class="form-select m-1" 
-                [(ngModel)]="selectedPlace" 
+              <select
+                class="form-select m-1"
+                [(ngModel)]="selectedPlace"
                 (ngModelChange)="filterMarkers()"
               >
                 <option value="" selected>Mjesto</option>
-                <option value="NoviPazarDataFilter">Novi Pazar</option>
-                <option value="SjenicaDataFilter">Sjenica</option>
-                <option value="TutinDataFilter">Tutin</option>
-                <option value="PribojDataFilter">Priboj</option>
+                <option
+                  *ngFor="let place of markersDataArray | uniqueNamesPipe : 'placeFilter'"
+                  value="{{ place.placeFilter }}"
+                >
+                  {{ place.placeFilter }}
+                </option>
               </select>
             </div>
           </div>
