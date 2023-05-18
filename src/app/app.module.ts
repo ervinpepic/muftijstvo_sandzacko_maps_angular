@@ -5,9 +5,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { UniqueNamesPipePipe } from './unique-names-pipe.pipe';
+import { EllipsisPipe } from './ellipsis.pipe';
 
 @NgModule({
-  declarations: [AppComponent, UniqueNamesPipePipe],
+  declarations: [AppComponent, UniqueNamesPipePipe, EllipsisPipe],
   imports: [BrowserModule, AppRoutingModule, FormsModule],
   providers: [],
   bootstrap: [AppComponent],

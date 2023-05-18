@@ -7,7 +7,7 @@ export function infoWindowStyling(marker) {
             "<i class='fa-solid fa-mosque'></i> - <i class='fa-solid fa-location-dot'>" +
             '</i> Naziv objekta / Mjesta:' +
           '</p>' +
-          "<h4 class='mb-2'>" + marker.placeName + '</h4>' +
+          "<h4 class='mb-2'>" + marker.vakufName + '</h4>' +
           '<hr>' +
           "<p class='lead'>" + 
             '<span><strong>' +
@@ -32,7 +32,7 @@ export function infoWindowStyling(marker) {
           "<p class='lead'>" +
             '<span><strong>' +
               "<i class='fa-solid fa-city'></i> Katastarska opština: " +
-            '</strong></span>' + marker.cadastarMunicipality +
+            '</strong></span>' + marker.cadastralMunicipality +
           '</p>' +
           "<p class='lead'>" + 
             '<span><strong>' +
@@ -54,7 +54,7 @@ export function infoWindowStyling(marker) {
               '</a>' +
             '</strong></span>' +
           '</p>' +
-          "<img src='" + marker.image +
+          "<img src='" + marker.vakufImage +
             "' id='viewImageControl' class='collapse img-fluid rounded mt-2' width='100%' height='100%'>" +
         '</div>' +
       '</div>' +
