@@ -72,7 +72,7 @@ export class AppComponent implements AfterViewInit {
   //Use for ViewChild decorator
   ngAfterViewInit(): void {
     const loader = new Loader({
-      apiKey: 'GOOGLEAPIKEY',
+      apiKey: GOOGLEAPIKEY,
       version: 'weekly'
     });
     loader.load().then(() => {
