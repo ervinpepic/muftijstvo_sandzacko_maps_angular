@@ -1,6 +1,7 @@
 import {AfterViewInit, Component, ViewChild, ElementRef } from '@angular/core';
+//Google async MAPS API loader
 import { Loader } from '@googlemaps/js-api-loader';
-// import { MarkerClusterer } from '@googlemaps/markerclusterer';
+//marker interface
 import { Marker } from './marker/Marker';
 
 //Styling imports
@@ -113,12 +114,6 @@ export class AppComponent implements AfterViewInit {
       //return marker after creation
       return marker;
     });
-
-    //create marker clusters
-    // this.markersCluster = new MarkerClusterer({
-    //   map: this.map,
-    //   markers: this.markers,
-    // });
 
   }
 

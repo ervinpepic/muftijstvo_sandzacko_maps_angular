@@ -1,16 +1,23 @@
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
-import {} from 'google.maps';
+import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { UniqueNamesPipePipe } from './unique-names-pipe.pipe';
 import { EllipsisPipe } from './ellipsis.pipe';
 
 @NgModule({
-  declarations: [AppComponent, UniqueNamesPipePipe, EllipsisPipe],
-  imports: [BrowserModule, AppRoutingModule, FormsModule],
+  declarations: [
+    AppComponent,
+    UniqueNamesPipePipe,
+    EllipsisPipe
+  ],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    AppRoutingModule
+  ],
   providers: [],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }
