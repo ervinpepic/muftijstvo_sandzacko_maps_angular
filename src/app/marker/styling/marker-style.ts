@@ -1,5 +1,5 @@
-export class StylingMarkers {
 
+export class StylingMarkers {
     markerIconDefaultCreate() {
         let icon = {
             url: "../assets/images/marker_main.svg",

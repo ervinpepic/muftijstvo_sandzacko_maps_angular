@@ -1,4 +1,3 @@
-
 export interface Marker {
     vakufName: string
     vakufType: string,
@@ -10,5 +9,5 @@ export interface Marker {
     yearFounded: string,
     streetName: string,
     vakufImage: string,
-    position: google.maps.LatLng,
+    position: object
 }

@@ -1,3 +1,4 @@
+
 export const mapStyling: google.maps.MapTypeStyle[] = 
 [
     {

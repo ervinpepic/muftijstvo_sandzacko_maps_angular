@@ -1,4 +1,14 @@
 <div class="container"> <!-- start of the main cointainer div tag-->
+  <div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+      Dropdown button
+    </button>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="#">Action</a></li>
+      <li><a class="dropdown-item" href="#">Another action</a></li>
+      <li><a class="dropdown-item" href="#">Something else here</a></li>
+    </ul>
+  </div>
   <div class="row text-center d-none d-md-block"> <!-- outer div for the title -->
     <div class="col">
       <h3 class="mb-5 mt-5">Muftijstvo sandžačko | mape vakufa</h3>
@@ -55,6 +65,7 @@
 
               <select
                 class="form-select m-1"
+                aria-label="Tip Vakufa"
                 [(ngModel)]="selectedVakufType"
                 (ngModelChange)="filterMarkers()"
               > <!-- select tag for choosing categories of objects -->
@@ -75,6 +86,7 @@
 
               <select
                 class="form-select m-1"
+                aria-label="Grad"
                 [(ngModel)]="selectedCity"
                 (ngModelChange)="filterMarkers()"
                 (ngModelChange)="resetSelectedVakufNames()"
@@ -93,10 +105,11 @@
 
             <div class="navbar-nav"> <!-- inner div tag for choosing name of the objects -->
               <select
-                *ngIf="selectedVakufType || selectedCity"
-                class="form-select m-1"
-                [(ngModel)]="filteredVakufNames"
-                (ngModelChange)="filterMarkers()"
+              class="form-select m-1"
+              aria-label="Naziv Vakufa"
+              [(ngModel)]="filteredVakufNames"
+              (ngModelChange)="filterMarkers()"
+              *ngIf="selectedVakufType || selectedCity"
               > <!--  select tag for choosing name of the objects -->
 
                 <option value="" selected>Naziv Vakufa</option>
@@ -110,10 +123,11 @@
               </select> <!--  end select tag for choosing name of the objects -->
 
               <select
-                *ngIf="!selectedVakufType && !selectedCity"
                 class="form-select m-1"
+                aria-label="Naziv Vakufa"
                 [(ngModel)]="filteredVakufNames"
                 (ngModelChange)="filterMarkers()"
+                *ngIf="!selectedVakufType && !selectedCity"
               > <!--  select tag for choosing name of the objects full list-->
 
                 <option value="" selected>Naziv Vakufa</option>
@@ -128,7 +142,7 @@
             
           </div>
         </div> <!-- end div for select forms -->
-
+        
         </div> <!-- end of the div container fluid -->
       </nav> <!-- navbar ends -->
     </div> <!-- div cols -->
