@@ -1,24 +1,21 @@
-<div class="container"> <!-- start of the main cointainer div tag-->
-  <div class="dropdown">
-    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-      Dropdown button
-    </button>
-    <ul class="dropdown-menu">
-      <li><a class="dropdown-item" href="#">Action</a></li>
-      <li><a class="dropdown-item" href="#">Another action</a></li>
-      <li><a class="dropdown-item" href="#">Something else here</a></li>
-    </ul>
-  </div>
-  <div class="row text-center d-none d-md-block"> <!-- outer div for the title -->
+<!-- start of the main cointainer div tag-->
+<div class="container">
+  <!-- outer div for the title -->
+  <div class="row text-center d-none d-md-block">
     <div class="col">
-      <h3 class="mb-5 mt-5">Muftijstvo sandžačko | mape vakufa</h3>
+      <h3 class="mb-5 mt-5">Muftijstvo sandžačko | mapa vakufa</h3>
     </div>
-  </div> <!-- end outer div for the title -->
+    <!-- end outer div for the title -->
+  </div>
 
-  <div class="row mt-3"> <!-- div for the navbars and forms -->
-    <div class="col"> <!-- div cols -->
-      <nav class="navbar navbar-expand-sm navbar-light navbar-override"> <!-- navbar starts -->
-        <div class="container-fluid"> <!-- end of the div container fluid -->
+  <!-- div for the navbars and forms -->
+  <div class="row mt-3">
+    <!-- div cols -->
+    <div class="col">
+      <!-- navbar starts -->
+      <nav class="navbar navbar-expand-sm navbar-light navbar-override">
+        <!-- end of the div container fluid -->
+        <div class="container-fluid">
           <a class="navbar-brand">
             <img
               src="../assets/images/logo_muftijstvo.svg"
@@ -39,10 +36,11 @@
             <span class="navbar-toggler-icon"></span>
           </button>
 
+          <!-- div for search form-->
           <div
-            class="collapse navbar-collapse justify-content-start"
-            id="navbarSupportedContent"
-          > <!-- div for search form-->
+          class="collapse navbar-collapse justify-content-start"
+          id="navbarSupportedContent"
+          >
             <div class="navbar-nav">
               <input
                 class="form-control m-1"
@@ -54,63 +52,79 @@
                 (ngModelChange)="filterMarkers()"
               />
             </div>
-          </div> <!-- end of the div for search form -->
+            <!-- end of the div for search form -->
+          </div>
 
+          <!-- outer div for select forms -->
           <div
             class="collapse navbar-collapse justify-content-end"
             id="navbarSupportedContent"
-          > <!-- outer div for select forms -->
+          >
 
-            <div class="navbar-nav">  <!-- inner div for select forms -->
+          <!-- inner div for select forms -->
+            <div class="navbar-nav">
 
+              <!-- select tag for choosing categories of objects -->
               <select
+                name="vakufType"
                 class="form-select m-1"
                 aria-label="Tip Vakufa"
                 [(ngModel)]="selectedVakufType"
                 (ngModelChange)="filterMarkers()"
-              > <!-- select tag for choosing categories of objects -->
+              >
 
                 <option value="" selected>Tip Vakufa</option>
                 <option
-                  *ngFor="let type of vakufDataDB | uniqueNamesPipe : 'vakufType'"
+                  *ngFor="
+                    let type of vakufDataDB | uniqueNamesPipe : 'vakufType'
+                  "
                   [value]="type.vakufType"
                 >
                   {{ type.vakufType | titlecase }}
                 </option>
+                <!-- end select tag for choosing categories of objects -->
+              </select>
+              <!-- end inner div for select forms -->
+            </div>
 
-              </select> <!-- end select tag for choosing categories of objects -->
+            <!-- div tag for choosing cities -->
+            <div class="navbar-nav">
 
-            </div> <!-- end inner div for select forms -->
-
-            <div class="navbar-nav"> <!-- div tag for choosing cities -->
-
+              <!-- select tag for choosing cities -->
               <select
+                name="selectedCity"
                 class="form-select m-1"
                 aria-label="Grad"
                 [(ngModel)]="selectedCity"
                 (ngModelChange)="filterMarkers()"
                 (ngModelChange)="resetSelectedVakufNames()"
-              > <!-- select tag for choosing cities -->
+              >
 
                 <option value="" selected>Grad</option>
                 <option
-                  *ngFor="let cityName of vakufDataDB | uniqueNamesPipe : 'city'"
+                  *ngFor="
+                    let cityName of vakufDataDB | uniqueNamesPipe : 'city'
+                  "
                   [value]="cityName.city"
                 >
                   {{ cityName.city }}
                 </option>
 
-              </select><!-- end select tag for choosing places of objects -->
+                <!-- end select tag for choosing places of objects -->
+                </select>
             </div>
 
-            <div class="navbar-nav"> <!-- inner div tag for choosing name of the objects -->
+            <!-- inner div tag for choosing name of the objects -->
+            <div class="navbar-nav">
+              <!--  select tag for choosing name of the objects -->
               <select
-              class="form-select m-1"
-              aria-label="Naziv Vakufa"
-              [(ngModel)]="filteredVakufNames"
-              (ngModelChange)="filterMarkers()"
-              *ngIf="selectedVakufType || selectedCity"
-              > <!--  select tag for choosing name of the objects -->
+                name="filteredVakufNames"
+                class="form-select m-1"
+                aria-label="Naziv Vakufa"
+                [(ngModel)]="filteredVakufNames"
+                (ngModelChange)="filterMarkers()"
+                *ngIf="selectedVakufType || selectedCity"
+              >
 
                 <option value="" selected>Naziv Vakufa</option>
                 <option
@@ -120,15 +134,18 @@
                   {{ name.vakufName | ellipsis : 25 }}
                 </option>
 
-              </select> <!--  end select tag for choosing name of the objects -->
+                <!--  end select tag for choosing name of the objects -->
+              </select>
 
+              <!--  select tag for choosing name of the objects full list-->
               <select
+                name="filteredVakufNames_source"
                 class="form-select m-1"
                 aria-label="Naziv Vakufa"
                 [(ngModel)]="filteredVakufNames"
                 (ngModelChange)="filterMarkers()"
                 *ngIf="!selectedVakufType && !selectedCity"
-              > <!--  select tag for choosing name of the objects full list-->
+              >
 
                 <option value="" selected>Naziv Vakufa</option>
                 <option
@@ -138,19 +155,24 @@
                   {{ name.vakufName | ellipsis : 25 }}
                 </option>
 
-              </select> <!--  end select tag for choosing name of the objects full list -->
-            
+                <!--  end select tag for choosing name of the objects full list -->
+              </select>
+            </div>
+            <!-- end div for select forms -->
           </div>
-        </div> <!-- end div for select forms -->
-        
-        </div> <!-- end of the div container fluid -->
-      </nav> <!-- navbar ends -->
-    </div> <!-- div cols -->
-  </div> <!-- end of the div for the navbars and forms -->
+          <!-- end of the div container fluid -->
+        </div>
+        <!-- navbar ends -->
+      </nav>
+      <!-- div cols -->
+    </div>
+    <!-- end of the div for the navbars and forms -->
+  </div>
 
   <div class="row">
     <div class="col">
       <div #mapContainer id="map-canvas"></div>
     </div>
   </div>
-</div> <!-- end of the main cointainer div tag-->
+</div>
+<!-- end of the main cointainer div tag-->

@@ -1,18 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
 /* You can add global styles to this file, and also import other style files */
 body {
-    background-image: url("./assets/images/info-window-background.png");
-    background-attachment: fixed;
-    background-position: center center;
-    background-size: auto;
-    background-repeat: repeat;
-  }
-  
-  img {
-    border-radius: 15px;
-  }
-  
-  .infowindow {
-    max-height: max-content;
-    max-width: max-content;
-  }
+  background-image: url("./assets/images/info-window-background.png");
+  background-attachment: fixed;
+  background-position: center center;
+  background-size: auto;
+  background-repeat: repeat;
+}
+
+img {
+  border-radius: 15px;
+}
+
+.infowindow {
+  max-height: max-content;
+  max-width: max-content;
+}

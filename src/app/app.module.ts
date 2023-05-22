@@ -7,17 +7,9 @@ import { UniqueNamesPipePipe } from './unique-names-pipe.pipe';
 import { EllipsisPipe } from './ellipsis.pipe';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    UniqueNamesPipePipe,
-    EllipsisPipe
-  ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    AppRoutingModule
-  ],
+  declarations: [AppComponent, UniqueNamesPipePipe, EllipsisPipe],
+  imports: [BrowserModule, FormsModule, AppRoutingModule],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

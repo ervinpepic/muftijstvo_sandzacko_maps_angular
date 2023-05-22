@@ -1,7 +1,10 @@
-import {AfterViewInit, Component, ViewChild, ElementRef } from '@angular/core';
+import { AfterViewInit, Component, ViewChild, ElementRef } from '@angular/core';
+
 //Google async MAPS API loader
 import { Loader } from '@googlemaps/js-api-loader';
+//API key from env file
 import { GOOGLEAPIKEY } from 'src/env';
+
 //marker interface
 import { Marker } from './marker/Marker';
 
@@ -14,84 +17,76 @@ import { mapStyling } from './map/map-style';
 import { PolygonsBoundaries } from './polygons/map-polygons';
 import { VakufDataDB } from './database/database-seed';
 
-
-
-declare const google: any;
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-
 export class AppComponent implements AfterViewInit {
   //use for reference child component into the app compoment with gmap
   //when creating map
   @ViewChild('mapContainer', { static: false }) mapContainer: ElementRef;
-  
+
   //class member for title
   title = 'Muftijstvo Sandžačko Mape Vakufa';
-  
+
   //DB connection
   vakufDataDB = VakufDataDB;
-  
-  
+
   //class members for search and filtering ngModel in app.component.html
-  searchTerm?: string = ''; //used in search bar form 
+  searchTerm?: string = ''; //used in search bar form
   selectedVakufType?: string = ''; //used in select dropdown menu for type of object
   selectedCity?: string = ''; //used in select dropdown menu for place
   filteredVakufNames?: string = ''; //used in select dropdown menu for place name after filtering and before filtering
-  
-  //Arrays of markers data after filtering them through filterMarker() function
+
+  //Arrays of markers after filtering using filterMarker() function
   visibleVakufNames?: Marker[] = [];
-  
-  // visibleOptions: Marker[] = [];
-  // visibleCount: number = 5;
-  // loadIncrement: number = 5;
-  
+
   //Arrays of markers data
   markers: Array<any> = [];
-  // markersCluster: MarkerClusterer;
-  
+
   //google maps initializatior and setup
   map?: google.maps.Map;
   mapStyle = mapStyling;
   mapCenter = {
-    lat: 42.99603931107363, 
-    lng: 19.863259815559704
-  }
+    lat: 42.99603931107363,
+    lng: 19.863259815559704,
+  };
   mapZoom = 9;
-  
-  //marker styling
+
+  //marker styling functions from separated modules
   markerEvents = new MarkerEvents();
   markerStyling = new StylingMarkers();
-  
+
   //map polygon boundaries for Sandzak
   polygons = new PolygonsBoundaries();
-  
-  //Use for ViewChild decorator
+
+  //mandatory for AfterViewInit decorator
   ngAfterViewInit(): void {
-    const loader = new Loader({
+    const googleApiAsyncLoader = new Loader({
       apiKey: GOOGLEAPIKEY,
-      version: 'weekly'
+      version: 'weekly',
     });
-    loader.load().then(() => {
-      this.loadMap();
+    //initialize createMap() funciton with async closure
+    googleApiAsyncLoader.load().then(() => {
+      this.createMap();
     });
   }
 
-  //google maps initialize
-  loadMap(): void {
+  //google maps initialization
+  createMap(): void {
     this.map = new google.maps.Map(this.mapContainer.nativeElement, {
       center: this.mapCenter,
       zoom: this.mapZoom,
       styles: this.mapStyle,
     });
+    //call addMarkers() for creating markers in this map
     this.addMarkers();
+    //call for polygons creation
     this.polygons.drawPolgygons(this.map);
   }
-  
-  //add all markers
+
+  //logic for adding markers to the map
   addMarkers() {
     this.vakufDataDB.map((markerData) => {
       const marker = new google.maps.Marker({
@@ -103,7 +98,7 @@ export class AppComponent implements AfterViewInit {
         animation: google.maps.Animation.DROP,
       });
 
-      //add style to the markers
+      //style for markers
       this.markerEvents.markerInfoWindow(marker, markerData, this.map);
       this.markerEvents.markerMouseOver(marker);
       this.markerEvents.markerMouseOut(marker);
@@ -115,42 +110,34 @@ export class AppComponent implements AfterViewInit {
       //return marker after creation
       return marker;
     });
-
   }
 
   //filtering markers with multiple params
   filterMarkers() {
     const visibleMarkers = [];
+    
     this.markers.forEach((marker) => {
       const isVisible =
         (!this.selectedCity || marker.city === this.selectedCity) &&
-        (!this.selectedVakufType || marker.vakufType === this.selectedVakufType) &&
-        (!this.filteredVakufNames || marker.vakufName === this.filteredVakufNames) &&
-        (!this.searchTerm || marker.vakufName.toLowerCase().includes(
-          this.searchTerm.toLowerCase()) ||!this.searchTerm || marker.cadastralParcelNumber
-            .toLowerCase().includes(this.searchTerm.toLowerCase()));
+        (!this.selectedVakufType ||
+          marker.vakufType === this.selectedVakufType) &&
+        (!this.filteredVakufNames ||
+          marker.vakufName === this.filteredVakufNames) &&
+        (!this.searchTerm ||marker.vakufName.toLowerCase()
+            .includes(this.searchTerm.toLowerCase()) ||
+          !this.searchTerm ||marker.cadastralParcelNumber
+            .toLowerCase()
+            .includes(this.searchTerm.toLowerCase()));
       marker.setVisible(isVisible);
+
       if (isVisible) {
         visibleMarkers.push(marker);
       }
     });
 
-    // this.markersCluster.clearMarkers();
-
-    //initialize again after clearing all clusters
-    // this.markersCluster.addMarkers(visibleMarkers);
-
     //added visible markers after filtering to the visible marker array
     this.visibleVakufNames = visibleMarkers;
-
-    // this.visibleOptions = this.visibleVakufNames.slice(0, this.visibleCount);
   }
-
-  // loadMoreOptions() {
-  //   const remainingOptions = this.visibleVakufNames.slice(this.visibleOptions.length);
-  //   const optionstoAdd = remainingOptions.slice(0, this.loadIncrement);
-  //   this.visibleOptions = this.visibleOptions.concat(optionstoAdd);
-  // }
 
   resetSelectedVakufNames(): void {
     this.filteredVakufNames = '';
