@@ -1,6 +1,7 @@
 import {AfterViewInit, Component, ViewChild, ElementRef } from '@angular/core';
 //Google async MAPS API loader
 import { Loader } from '@googlemaps/js-api-loader';
+import { GOOGLEAPIKEY } from 'src/env';
 //marker interface
 import { Marker } from './marker/Marker';
 
