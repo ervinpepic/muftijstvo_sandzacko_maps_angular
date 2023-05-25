@@ -16,7 +16,7 @@ import { tutinPolygonDelimiter } from './sandzak/tutin';
 import { zoomChange } from './zoom-change';
 
 export class PolygonsBoundaries {
-  noviPazarPolygon(map) {
+  noviPazarPolygon(map: google.maps.Map) {
     let noviPazarPolygon = new google.maps.Polygon({
       paths: noviPazarPolygonDelimiter,
       geodesic: true,
@@ -30,7 +30,7 @@ export class PolygonsBoundaries {
     zoomChange(map, noviPazarPolygon);
   }
 
-  tutinPolygon(map) {
+  tutinPolygon(map: google.maps.Map) {
     let tutinPolygon = new google.maps.Polygon({
       paths: tutinPolygonDelimiter,
       geodesic: true,
@@ -44,7 +44,7 @@ export class PolygonsBoundaries {
     zoomChange(map, tutinPolygon);
   }
 
-  sjenicaPolygon(map) {
+  sjenicaPolygon(map: google.maps.Map) {
     let sjenicaPolygon = new google.maps.Polygon({
       paths: sjenicaPolygonDelimiter,
       geodesic: true,
@@ -58,7 +58,7 @@ export class PolygonsBoundaries {
     zoomChange(map, sjenicaPolygon);
   }
 
-  novaVarosPolygon(map) {
+  novaVarosPolygon(map: google.maps.Map) {
     let novaVarosPolygon = new google.maps.Polygon({
       paths: novaVarosPolygonDelimiter,
       geodesic: true,
@@ -72,7 +72,7 @@ export class PolygonsBoundaries {
     zoomChange(map, novaVarosPolygon);
   }
 
-  prijepoljePolygon(map) {
+  prijepoljePolygon(map: google.maps.Map) {
     let prijepoljePolygon = new google.maps.Polygon({
       paths: prijepoljePolygonDelimiter,
       geodesic: true,
@@ -86,7 +86,7 @@ export class PolygonsBoundaries {
     zoomChange(map, prijepoljePolygon);
   }
 
-  pribojPolygon(map) {
+  pribojPolygon(map: google.maps.Map) {
     let pribojPolygon = new google.maps.Polygon({
       paths: pribojPolygonDelimiter,
       geodesic: true,
@@ -100,7 +100,7 @@ export class PolygonsBoundaries {
     zoomChange(map, pribojPolygon);
   }
 
-  rozajePolygon(map) {
+  rozajePolygon(map: google.maps.Map) {
     let rozajePolygon = new google.maps.Polygon({
       paths: rozajePolygonDelimiter,
       geodesic: true,
@@ -113,7 +113,7 @@ export class PolygonsBoundaries {
     rozajePolygon.setMap(map);
     // zoomChange(map, rozajePolygon);
   }
-  beranePolygon(map) {
+  beranePolygon(map: google.maps.Map) {
     let beranePolygon = new google.maps.Polygon({
       paths: beranePolygonDelimiter,
       geodesic: true,
@@ -126,7 +126,7 @@ export class PolygonsBoundaries {
     beranePolygon.setMap(map);
     zoomChange(map, beranePolygon);
   }
-  andrijevicaPolygon(map) {
+  andrijevicaPolygon(map: google.maps.Map) {
     let andrijevicaPolygon = new google.maps.Polygon({
       paths: andrijevicaPolygonDelimiter,
       geodesic: true,
@@ -139,7 +139,7 @@ export class PolygonsBoundaries {
     andrijevicaPolygon.setMap(map);
     zoomChange(map, andrijevicaPolygon);
   }
-  bijeloPoljePolygon(map) {
+  bijeloPoljePolygon(map: google.maps.Map) {
     let bijeloPoljePolygon = new google.maps.Polygon({
       paths: bijeloPoljePolygonDelimiter,
       geodesic: true,
@@ -152,7 +152,7 @@ export class PolygonsBoundaries {
     bijeloPoljePolygon.setMap(map);
     zoomChange(map, bijeloPoljePolygon);
   }
-  plavPolygon(map) {
+  plavPolygon(map: google.maps.Map) {
     let plavPolygon = new google.maps.Polygon({
       paths: plavPolygonDelimiter,
       geodesic: true,
@@ -165,7 +165,7 @@ export class PolygonsBoundaries {
     plavPolygon.setMap(map);
     zoomChange(map, plavPolygon);
   }
-  pljevljaPolygon(map) {
+  pljevljaPolygon(map: google.maps.Map) {
     let pljevljaPolygon = new google.maps.Polygon({
       paths: pljevljaPolygonDelimiter,
       geodesic: true,
@@ -178,7 +178,7 @@ export class PolygonsBoundaries {
     pljevljaPolygon.setMap(map);
     zoomChange(map, pljevljaPolygon);
   }
-  gusinjePolygon(map) {
+  gusinjePolygon(map: google.maps.Map) {
     let gusinjePolygon = new google.maps.Polygon({
       paths: gusinjePolygonDelimiter,
       geodesic: true,
@@ -191,7 +191,7 @@ export class PolygonsBoundaries {
     gusinjePolygon.setMap(map);
     zoomChange(map, gusinjePolygon);
   }
-  petnjicaPolygon(map) {
+  petnjicaPolygon(map: google.maps.Map) {
     let petnjicaPolygon = new google.maps.Polygon({
       paths: petnjicaPolygonDelimiter,
       geodesic: true,
@@ -205,7 +205,7 @@ export class PolygonsBoundaries {
     zoomChange(map, petnjicaPolygon);
   }
 
-  drawPolgygons(map) {
+  drawPolgygons(map: google.maps.Map) {
     this.noviPazarPolygon(map);
     this.tutinPolygon(map);
     this.sjenicaPolygon(map);

@@ -1,13 +1,14 @@
 import { StylingMarkers } from '../styling/marker-style';
 import { infoWindowStyling } from '../info-window/info-window-style';
+import { Marker } from '../Marker';
 
 export class MarkerEvents {
-  infoWindowsClose = [];
+  infoWindowsClose: any = [];
   infoWindowStyling = infoWindowStyling;
 
   markerStyling = new StylingMarkers();
 
-  markerInfoWindow(marker, markerData, map) {
+  markerInfoWindow(marker: any, markerData: Marker, map: any) {
     let infoWindow = new google.maps.InfoWindow();
     marker.addListener('click', () => {
       this.closeOtherInfo();
@@ -31,19 +32,19 @@ export class MarkerEvents {
     });
   }
 
-  markerMouseOver(marker) {
+  markerMouseOver(marker: any) {
     marker.addListener('mouseover', () => {
       this.markerStyling.markerMouseOver(marker);
     });
   }
 
-  markerMouseOut(marker) {
+  markerMouseOut(marker: any) {
     marker.addListener('mouseout', () => {
       this.markerStyling.markerMouseOut(marker);
     });
   }
 
-  markerBounce(marker) {
+  markerBounce(marker: any) {
     if (marker.getAnimation() !== null) {
       marker.setAnimation(null);
     } else {

@@ -1,4 +1,4 @@
-export function infoWindowStyling(marker) {
+export function infoWindowStyling(marker: any) {
   return (
     "<div class='infowindow'>" +
       "<div class='row p-1'>" +

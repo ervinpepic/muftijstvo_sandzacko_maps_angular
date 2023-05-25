@@ -25,7 +25,7 @@ import { VakufDataDB } from './database/database-seed';
 export class AppComponent implements AfterViewInit {
   //use for reference child component into the app compoment with gmap
   //when creating map
-  @ViewChild('mapContainer', { static: false }) mapContainer: ElementRef;
+  @ViewChild('mapContainer', { static: false }) mapContainer?: ElementRef;
 
   //class member for title
   title = 'Muftijstvo Sandžačko Mape Vakufa';
@@ -75,7 +75,7 @@ export class AppComponent implements AfterViewInit {
 
   //google maps initialization
   createMap(): void {
-    this.map = new google.maps.Map(this.mapContainer.nativeElement, {
+    this.map = new google.maps.Map(this.mapContainer!.nativeElement, {
       center: this.mapCenter,
       zoom: this.mapZoom,
       styles: this.mapStyle,
@@ -105,7 +105,7 @@ export class AppComponent implements AfterViewInit {
 
       //add extracted markers to the array of markers
       this.markers.push(marker);
-      marker.setMap(this.map);
+      marker.setMap(this.map!);
 
       //return marker after creation
       return marker;
@@ -114,7 +114,7 @@ export class AppComponent implements AfterViewInit {
 
   //filtering markers with multiple params
   filterMarkers() {
-    const visibleMarkers = [];
+    const visibleMarkers: any[] = [];
     
     this.markers.forEach((marker) => {
       const isVisible =

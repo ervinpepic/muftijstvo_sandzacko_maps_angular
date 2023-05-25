@@ -7,7 +7,7 @@ export class StylingMarkers {
     };
     return icon;
   }
-  markerIconDefault(marker) {
+  markerIconDefault(marker: google.maps.Marker) {
     marker.setIcon({
       url: '../assets/images/marker_main.svg',
       scaledSize: new google.maps.Size(40, 40),
@@ -15,7 +15,7 @@ export class StylingMarkers {
     });
   }
 
-  markerIconLarge(marker) {
+  markerIconLarge(marker: google.maps.Marker) {
     marker.setIcon({
       url: '../assets/images/marker_hover.svg',
       scaledSize: new google.maps.Size(60, 60),
@@ -25,11 +25,11 @@ export class StylingMarkers {
   ////////////////////////////////////////////////////////
   ////////////////////////////////////////////////////////
 
-  markerMouseOver(marker) {
+  markerMouseOver(marker: google.maps.Marker) {
     this.markerIconLarge(marker);
   }
 
-  markerMouseOut(marker) {
+  markerMouseOut(marker: google.maps.Marker) {
     this.markerIconDefault(marker);
   }
 }
