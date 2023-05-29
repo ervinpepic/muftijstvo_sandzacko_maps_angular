@@ -1,4 +1,6 @@
 import { AfterViewInit, Component, ViewChild, ElementRef } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 //Google async MAPS API loader
 import { Loader } from '@googlemaps/js-api-loader';
@@ -34,10 +36,13 @@ export class AppComponent implements AfterViewInit {
   vakufDataDB = VakufDataDB;
 
   //class members for search and filtering ngModel in app.component.html
-  searchTerm?: string = ''; //used in search bar form
+  searchTerm: string = ''; //used in search bar form
   selectedVakufType?: string = ''; //used in select dropdown menu for type of object
   selectedCity?: string = ''; //used in select dropdown menu for place
   filteredVakufNames?: string = ''; //used in select dropdown menu for place name after filtering and before filtering
+  searchSuggestions: string[] = [];
+  showSearchSuggestions: boolean = false;
+  searchControl: FormControl = new FormControl();
 
   //Arrays of markers after filtering using filterMarker() function
   visibleVakufNames?: Marker[] = [];
@@ -141,6 +146,35 @@ export class AppComponent implements AfterViewInit {
 
   resetSelectedVakufNames(): void {
     this.filteredVakufNames = '';
+    this.filterMarkers();
+  }
+
+  generateSearchSuggestions(value: string) {
+    this.searchSuggestions = []; // Clear the array before generating suggestions
+    this.markers.forEach((marker) => {
+      if (marker.vakufName.toLowerCase().includes(value.toLowerCase())) {
+        this.searchSuggestions.push(marker.vakufName);
+      }
+    });
+  }
+
+  handleSearchInput(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    const value = inputElement.value;
+  
+    this.searchControl.setValue(value);
+  
+    if (value.length > 0) {
+      this.generateSearchSuggestions(value);
+      this.showSearchSuggestions = true;
+    } else {
+      this.showSearchSuggestions = false;
+    }
+  }
+  
+  selectSearchSuggestion(suggestion: string) {
+    this.searchTerm = suggestion;
+    this.showSearchSuggestions = false;
     this.filterMarkers();
   }
 }

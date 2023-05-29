@@ -38,32 +38,42 @@
 
           <!-- div for search form-->
           <div
-          class="collapse navbar-collapse justify-content-start"
-          id="navbarSupportedContent"
+            class="collapse navbar-collapse justify-content-start"
+            id="navbarSupportedContent"
           >
-            <div class="navbar-nav">
+            <div class="input-group m-1">
               <input
-                class="form-control m-1"
+                class="form-control"
                 type="search"
                 placeholder="Pretraži Vakufe"
                 aria-label="Search"
                 name="searchTerm"
                 [(ngModel)]="searchTerm"
                 (ngModelChange)="filterMarkers()"
+                (input)="handleSearchInput($event)"
               />
+              <ul
+                class="list-group search-suggestions"
+                *ngIf="showSearchSuggestions"
+              >
+                <li
+                  class="list-group-item"
+                  *ngFor="let suggestion of searchSuggestions | slice : 0 : 6"
+                  (click)="selectSearchSuggestion(suggestion)"
+                >
+                  {{ suggestion | ellipsis : 25 }}
+                </li>
+              </ul>
             </div>
             <!-- end of the div for search form -->
           </div>
-
           <!-- outer div for select forms -->
           <div
             class="collapse navbar-collapse justify-content-end"
             id="navbarSupportedContent"
           >
-
-          <!-- inner div for select forms -->
+            <!-- inner div for select forms -->
             <div class="navbar-nav">
-
               <!-- select tag for choosing categories of objects -->
               <select
                 name="vakufType"
@@ -72,7 +82,6 @@
                 [(ngModel)]="selectedVakufType"
                 (ngModelChange)="filterMarkers()"
               >
-
                 <option value="" selected>Tip Vakufa</option>
                 <option
                   *ngFor="
@@ -89,7 +98,6 @@
 
             <!-- div tag for choosing cities -->
             <div class="navbar-nav">
-
               <!-- select tag for choosing cities -->
               <select
                 name="selectedCity"
@@ -99,7 +107,6 @@
                 (ngModelChange)="filterMarkers()"
                 (ngModelChange)="resetSelectedVakufNames()"
               >
-
                 <option value="" selected>Grad</option>
                 <option
                   *ngFor="
@@ -111,7 +118,7 @@
                 </option>
 
                 <!-- end select tag for choosing places of objects -->
-                </select>
+              </select>
             </div>
 
             <!-- inner div tag for choosing name of the objects -->
@@ -125,7 +132,6 @@
                 (ngModelChange)="filterMarkers()"
                 *ngIf="selectedVakufType || selectedCity"
               >
-
                 <option value="" selected>Naziv Vakufa</option>
                 <option
                   *ngFor="let name of visibleVakufNames"
@@ -146,7 +152,6 @@
                 (ngModelChange)="filterMarkers()"
                 *ngIf="!selectedVakufType && !selectedCity"
               >
-
                 <option value="" selected>Naziv Vakufa</option>
                 <option
                   *ngFor="let name of vakufDataDB"

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -8,7 +9,7 @@ import { EllipsisPipe } from './ellipsis.pipe';
 
 @NgModule({
   declarations: [AppComponent, UniqueNamesPipePipe, EllipsisPipe],
-  imports: [BrowserModule, FormsModule, AppRoutingModule],
+  imports: [BrowserModule, FormsModule, AppRoutingModule, NgSelectModule],
   providers: [],
   bootstrap: [AppComponent],
 })
