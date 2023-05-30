@@ -41,29 +41,44 @@
             class="collapse navbar-collapse justify-content-start"
             id="navbarSupportedContent"
           >
-            <div class="input-group m-1">
-              <input
-                class="form-control"
-                type="search"
-                placeholder="Pretraži Vakufe"
-                aria-label="Search"
-                name="searchTerm"
-                [(ngModel)]="searchTerm"
-                (ngModelChange)="filterMarkers()"
-                (input)="handleSearchInput($event)"
-              />
-              <ul
-                class="list-group search-suggestions"
-                *ngIf="showSearchSuggestions"
-              >
-                <li
-                  class="list-group-item"
-                  *ngFor="let suggestion of searchSuggestions | slice : 0 : 6"
-                  (click)="selectSearchSuggestion(suggestion)"
+            <div class="col-md-6 col">
+              <div class="input-group m-1">
+                <input
+                  class="form-control"
+                  type="search"
+                  placeholder="Naziv | br. parcele"
+                  aria-label="Search"
+                  name="searchTerm"
+                  [(ngModel)]="searchTerm"
+                  (ngModelChange)="filterMarkers()"
+                  (input)="handleSearchInput($event)"
+                />
+                <span class="input-group-append">
+                  <span class="input-group-text">
+                    <i
+                      class="fas-sharp fa-solid fa-magnifying-glass-location"
+                      style="color: #27a27a"
+                    ></i>
+                  </span>
+                </span>
+
+                <ul
+                  class="list-group search-suggestions"
+                  *ngIf="showSearchSuggestions"
                 >
-                  {{ suggestion | ellipsis : 25 }}
-                </li>
-              </ul>
+                  <li
+                    class="list-group-item"
+                    *ngFor="let suggestion of searchSuggestions | slice : 0 : 6"
+                    (click)="selectSearchSuggestion(suggestion)"
+                  >
+                    <span
+                      [innerHTML]="
+                        suggestion | highlightSearchTerm : searchTerm
+                      "
+                    ></span>
+                  </li>
+                </ul>
+              </div>
             </div>
             <!-- end of the div for search form -->
           </div>
@@ -78,11 +93,12 @@
               <select
                 name="vakufType"
                 class="form-select m-1"
-                aria-label="Tip Vakufa"
+                aria-label="Tip"
                 [(ngModel)]="selectedVakufType"
                 (ngModelChange)="filterMarkers()"
+                (ngModelChange)="resetSelectedVakufNames()"
               >
-                <option value="" selected>Tip Vakufa</option>
+                <option value="" selected>Tip</option>
                 <option
                   *ngFor="
                     let type of vakufDataDB | uniqueNamesPipe : 'vakufType'
@@ -132,7 +148,7 @@
                 (ngModelChange)="filterMarkers()"
                 *ngIf="selectedVakufType || selectedCity"
               >
-                <option value="" selected>Naziv Vakufa</option>
+                <option value="" selected>Naziv</option>
                 <option
                   *ngFor="let name of visibleVakufNames"
                   [value]="name.vakufName"
@@ -152,7 +168,7 @@
                 (ngModelChange)="filterMarkers()"
                 *ngIf="!selectedVakufType && !selectedCity"
               >
-                <option value="" selected>Naziv Vakufa</option>
+                <option value="" selected>Naziv</option>
                 <option
                   *ngFor="let name of vakufDataDB"
                   [value]="name.vakufName"

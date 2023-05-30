@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, ViewChild, ElementRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 //Google async MAPS API loader
 import { Loader } from '@googlemaps/js-api-loader';
@@ -18,6 +17,7 @@ import { mapStyling } from './map/map-style';
 //Data sets import
 import { PolygonsBoundaries } from './polygons/map-polygons';
 import { VakufDataDB } from './database/database-seed';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -28,13 +28,12 @@ export class AppComponent implements AfterViewInit {
   //use for reference child component into the app compoment with gmap
   //when creating map
   @ViewChild('mapContainer', { static: false }) mapContainer?: ElementRef;
-
+  @ViewChild('searchInput') searchInput!: ElementRef;
   //class member for title
   title = 'Muftijstvo Sandžačko Mape Vakufa';
 
   //DB connection
   vakufDataDB = VakufDataDB;
-
   //class members for search and filtering ngModel in app.component.html
   searchTerm: string = ''; //used in search bar form
   selectedVakufType?: string = ''; //used in select dropdown menu for type of object
@@ -43,7 +42,7 @@ export class AppComponent implements AfterViewInit {
   searchSuggestions: string[] = [];
   showSearchSuggestions: boolean = false;
   searchControl: FormControl = new FormControl();
-
+  search$ = new Subject<string>();
   //Arrays of markers after filtering using filterMarker() function
   visibleVakufNames?: Marker[] = [];
 
@@ -76,6 +75,7 @@ export class AppComponent implements AfterViewInit {
     googleApiAsyncLoader.load().then(() => {
       this.createMap();
     });
+    
   }
 
   //google maps initialization
@@ -154,6 +154,10 @@ export class AppComponent implements AfterViewInit {
     this.markers.forEach((marker) => {
       if (marker.vakufName.toLowerCase().includes(value.toLowerCase())) {
         this.searchSuggestions.push(marker.vakufName);
+      }
+      if (marker.cadastralParcelNumber.toLowerCase().includes(value.toLowerCase())) {
+        const suggestion = marker.cadastralParcelNumber + ' (' + marker.vakufName + ')';
+        this.searchSuggestions.push(suggestion);
       }
     });
   }
