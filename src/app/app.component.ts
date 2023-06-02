@@ -7,7 +7,7 @@ import { Loader } from '@googlemaps/js-api-loader';
 import { GOOGLEAPIKEY } from 'src/env';
 
 //marker interface
-import { Marker } from './marker/Marker';
+import { CustomMarker } from './marker/Marker';
 
 //Styling imports
 import { StylingMarkers } from './marker/styling/marker-style';
@@ -16,24 +16,29 @@ import { mapStyling } from './map/map-style';
 
 //Data sets import
 import { PolygonsBoundaries } from './polygons/map-polygons';
-import { VakufDataDB } from './database/database-seed';
+import { VakufData } from './database/database-seed';
 import { Subject } from 'rxjs';
+import { MarkerService } from './marker.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
+
 export class AppComponent implements AfterViewInit {
+
   //use for reference child component into the app compoment with gmap
   //when creating map
   @ViewChild('mapContainer', { static: false }) mapContainer?: ElementRef;
   @ViewChild('searchInput') searchInput!: ElementRef;
+
+  constructor(private markerService: MarkerService) {}
   //class member for title
   title = 'Muftijstvo Sandžačko Mape Vakufa';
 
   //DB connection
-  vakufDataDB = VakufDataDB;
+  vakufDataDB = VakufData;
   //class members for search and filtering ngModel in app.component.html
   searchTerm: string = ''; //used in search bar form
   selectedVakufType?: string = ''; //used in select dropdown menu for type of object
@@ -44,7 +49,7 @@ export class AppComponent implements AfterViewInit {
   searchControl: FormControl = new FormControl();
   search$ = new Subject<string>();
   //Arrays of markers after filtering using filterMarker() function
-  visibleVakufNames?: Marker[] = [];
+  visibleVakufNames?: CustomMarker[] = [];
 
   //Arrays of markers data
   markers: Array<any> = [];
@@ -86,35 +91,39 @@ export class AppComponent implements AfterViewInit {
       styles: this.mapStyle,
     });
     //call addMarkers() for creating markers in this map
-    this.addMarkers();
+    this.getMarkers();
     //call for polygons creation
     this.polygons.drawPolgygons(this.map);
   }
 
   //logic for adding markers to the map
-  addMarkers() {
-    this.vakufDataDB.map((markerData) => {
-      const marker = new google.maps.Marker({
-        ...markerData,
-        position: new google.maps.LatLng(markerData.position),
-        icon: this.markerStyling.markerIconDefaultCreate(),
-        draggable: false,
-        optimized: false,
-        animation: google.maps.Animation.DROP,
-      });
-
-      //style for markers
-      this.markerEvents.markerInfoWindow(marker, markerData, this.map);
-      this.markerEvents.markerMouseOver(marker);
-      this.markerEvents.markerMouseOut(marker);
-
-      //add extracted markers to the array of markers
-      this.markers.push(marker);
-      marker.setMap(this.map!);
+  getMarkers() {
+    this.markerService.getMarkers().subscribe((markerData => {
+      markerData.forEach((data) => {
+        const marker = new google.maps.Marker({
+          ...data,
+          position: new google.maps.LatLng(data.position),
+          icon: this.markerStyling.markerIconDefaultCreate(),
+          draggable: false,
+          optimized: false,
+          animation: google.maps.Animation.DROP,
+        });
+  
+        //style for markers
+        this.markerEvents.markerInfoWindow(marker, data, this.map);
+        this.markerEvents.markerMouseOver(marker);
+        this.markerEvents.markerMouseOut(marker);
+  
+        //add extracted markers to the array of markers
+        this.markers.push(marker);
+        marker.setMap(this.map!);
+      })
+    }));
+      
 
       //return marker after creation
-      return marker;
-    });
+      // return marker;
+    
   }
 
   //filtering markers with multiple params
@@ -181,4 +190,5 @@ export class AppComponent implements AfterViewInit {
     this.showSearchSuggestions = false;
     this.filterMarkers();
   }
+
 }

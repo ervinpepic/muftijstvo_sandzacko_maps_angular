@@ -1,4 +1,4 @@
-export interface Marker {
+export interface CustomMarker extends google.maps.MarkerOptions {
   vakufName: string;
   vakufType: string;
   city: string;

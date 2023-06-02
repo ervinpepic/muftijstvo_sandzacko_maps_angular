@@ -1,6 +1,6 @@
 import { StylingMarkers } from '../styling/marker-style';
 import { infoWindowStyling } from '../info-window/info-window-style';
-import { Marker } from '../Marker';
+import { CustomMarker } from '../Marker';
 
 export class MarkerEvents {
   infoWindowsClose: any = [];
@@ -8,7 +8,7 @@ export class MarkerEvents {
 
   markerStyling = new StylingMarkers();
 
-  markerInfoWindow(marker: any, markerData: Marker, map: any) {
+  markerInfoWindow(marker: any, markerData: CustomMarker, map: any) {
     let infoWindow = new google.maps.InfoWindow();
     marker.addListener('click', () => {
       this.closeOtherInfo();
