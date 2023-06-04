@@ -99,13 +99,8 @@
                 (ngModelChange)="resetSelectedVakufNames()"
               >
                 <option value="" selected>Tip</option>
-                <option
-                  *ngFor="
-                    let type of vakufDataDB | uniqueNamesPipe : 'vakufType'
-                  "
-                  [value]="type.vakufType"
-                >
-                  {{ type.vakufType | titlecase }}
+                <option *ngFor="let type of vakufObjectTypes" [value]="type">
+                  {{ type }}
                 </option>
                 <!-- end select tag for choosing categories of objects -->
               </select>
@@ -124,13 +119,8 @@
                 (ngModelChange)="resetSelectedVakufNames()"
               >
                 <option value="" selected>Grad</option>
-                <option
-                  *ngFor="
-                    let cityName of vakufDataDB | uniqueNamesPipe : 'city'
-                  "
-                  [value]="cityName.city"
-                >
-                  {{ cityName.city }}
+                <option *ngFor="let cityName of vakufCities" [value]="cityName">
+                  {{ cityName }}
                 </option>
 
                 <!-- end select tag for choosing places of objects -->
@@ -150,7 +140,10 @@
               >
                 <option value="" selected>Naziv</option>
                 <option
-             >
+                  *ngFor="let name of visibleVakufNames"
+                  [value]="name.vakufName"
+                >
+                  {{ name.vakufName | ellipsis : 25 }}
                 </option>
 
                 <!--  end select tag for choosing name of the objects -->
@@ -166,10 +159,7 @@
                 *ngIf="!selectedVakufType && !selectedCity"
               >
                 <option value="" selected>Naziv</option>
-                <option
-                  *ngFor="let name of vakufDataDB"
-                  [value]="name.vakufName"
-                >
+                <option *ngFor="let name of markers" [value]="name.vakufName">
                   {{ name.vakufName | ellipsis : 25 }}
                 </option>
 

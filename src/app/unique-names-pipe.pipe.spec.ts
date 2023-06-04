@@ -1,8 +1,8 @@
-import { UniqueNamesPipePipe } from './unique-names-pipe.pipe';
+import { UniqueNamesPipe } from './unique-names-pipe.pipe';
 
-describe('UniqueNamesPipePipe', () => {
+describe('UniqueNamesPipe', () => {
   it('create an instance', () => {
-    const pipe = new UniqueNamesPipePipe();
+    const pipe = new UniqueNamesPipe();
     expect(pipe).toBeTruthy();
   });
 });
