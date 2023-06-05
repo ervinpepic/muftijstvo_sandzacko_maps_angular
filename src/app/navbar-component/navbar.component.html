@@ -1,0 +1,128 @@
+<nav class="navbar navbar-expand-sm navbar-light navbar-override"> <!-- navbar starts -->
+  <div class="container-fluid"> <!-- inner container for nav -->
+    <a class="navbar-brand">
+      <img src="../assets/images/logo_muftijstvo.svg" alt="logo-muftijstva" width="30" height="30" />
+    </a>
+    <button 
+      class="navbar-toggler" 
+      type="button" 
+      data-bs-toggle="collapse" 
+      data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" 
+      aria-expanded="false" 
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- for search form-->
+    <div class="collapse navbar-collapse justify-content-start" id="navbarSupportedContent">
+      <div class="col-md-6 col">
+        <div class="input-group m-1"> <!-- input group -->
+          <input 
+            class="form-control" 
+            type="search" 
+            name="searchTerm" 
+            placeholder="Naziv | br. parcele" 
+            aria-label="Search"
+            [(ngModel)]="searchTerm" 
+            (ngModelChange)="filterMarkers()"
+            (input)="handleSearchInput($event)"
+          />
+          <span class="input-group-append">
+            <span class="input-group-text">
+              <i class="fas-sharp fa-solid fa-magnifying-glass-location" style="color: #27a27a"></i>
+            </span>
+          </span>
+          <ul 
+            class="list-group search-suggestions" 
+            *ngIf="showSearchSuggestions"
+          >
+            <li 
+              class="list-group-item" 
+              *ngFor="let suggestion of searchSuggestions | slice : 0 : 6"
+              (click)="selectSearchSuggestion(suggestion)"
+            >
+              <span [innerHTML]="suggestion | highlightSearchTerm:searchTerm"></span>
+            </li>
+          </ul>
+        </div> <!-- end input group -->
+      </div>
+    </div><!-- end search form-->
+
+    <!-- select forms -->
+    <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+      <div class="navbar-nav"> <!-- select forms -->
+        <select 
+          class="form-select m-1" 
+          name="vakufType" 
+          aria-label="Tip" 
+          [(ngModel)]="selectedVakufType"
+          (ngModelChange)="filterMarkers()"
+          (ngModelChange)="resetSelectedVakufNames()"
+        >
+          <option value="" selected>Tip</option>
+          <option 
+            *ngFor="let type of vakufObjectTypes" 
+            [value]="type"
+          >
+            {{ type }}
+          </option>
+        </select> <!-- end select for categories of objects -->
+      </div> <!-- end select forms -->
+
+      <div class="navbar-nav"> <!-- choosing cities -->
+        <select 
+          class="form-select m-1" 
+          name="selectedCity" 
+          aria-label="Grad"
+          [(ngModel)]="selectedCity"
+          (ngModelChange)="filterMarkers()" 
+          (ngModelChange)="resetSelectedVakufNames()"
+        >
+          <option value="" selected>Grad</option>
+          <option 
+            *ngFor="let cityName of vakufCities" 
+            [value]="cityName"
+          >
+            {{ cityName }}
+          </option>
+        </select> <!-- end select for places of objects -->
+      </div> <!-- end choosing cities -->
+    
+      <div class="navbar-nav"> <!-- inner navbar for objects -->
+        <select 
+          class="form-select m-1"
+          name="filteredVakufNames" 
+          aria-label="Naziv Vakufa"
+          [(ngModel)]="filteredVakufNames"
+          (ngModelChange)="filterMarkers()" 
+          *ngIf="selectedVakufType || selectedCity"
+          >
+            <option value="" selected>Naziv</option>
+            <option 
+              *ngFor="let name of visibleVakufNames" 
+              [value]="name.vakufName"
+            >
+              {{ name.vakufName | ellipsis : 25 }}
+            </option>
+        </select> <!--  end select for name of objects -->
+
+        <select 
+          class="form-select m-1" aria-label="Naziv Vakufa"
+          name="filteredVakufNames_source" 
+          [(ngModel)]="filteredVakufNames" 
+          (ngModelChange)="filterMarkers()"
+          *ngIf="!selectedVakufType && !selectedCity">
+          <option value="" selected>Naziv</option>
+          <option 
+            *ngFor="let name of markers" 
+            [value]="name.vakufName"
+          >
+            {{ name.vakufName | ellipsis : 25 }}
+          </option>
+        </select> <!-- end select for objects full list -->
+      </div> <!-- end for select forms -->
+    </div><!-- end container fluid -->
+  </div> <!--end inner container for nav -->
+</nav><!-- navbar ends -->

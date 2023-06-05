@@ -1,186 +1,28 @@
-<!-- start of the main cointainer div tag-->
-<div class="container">
-  <!-- outer div for the title -->
-  <div class="row text-center d-none d-md-block">
+<div class="container"><!-- main container -->
+
+  <div class="row text-center d-none d-md-block"> <!--title -->
     <div class="col">
       <h3 class="mb-5 mt-5">Muftijstvo sandžačko | mapa vakufa</h3>
+    </div> 
+  </div> <!-- end title -->
+  
+  <div class="row mt-3"> <!-- row navbar -->
+    <div class="col"> 
+
+      <app-navbar 
+        [vakufCities]="vakufCities" 
+        [vakufObjectTypes]="vakufObjectTypes"
+        [markers]="markers"> <!-- navbar starts -->
+      </app-navbar> <!-- navbar ends -->
+
     </div>
-    <!-- end outer div for the title -->
-  </div>
-
-  <!-- div for the navbars and forms -->
-  <div class="row mt-3">
-    <!-- div cols -->
-    <div class="col">
-      <!-- navbar starts -->
-      <nav class="navbar navbar-expand-sm navbar-light navbar-override">
-        <!-- end of the div container fluid -->
-        <div class="container-fluid">
-          <a class="navbar-brand">
-            <img
-              src="../assets/images/logo_muftijstvo.svg"
-              alt="logo-muftijstva"
-              width="30"
-              height="30"
-            />
-          </a>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-
-          <!-- div for search form-->
-          <div
-            class="collapse navbar-collapse justify-content-start"
-            id="navbarSupportedContent"
-          >
-            <div class="col-md-6 col">
-              <div class="input-group m-1">
-                <input
-                  class="form-control"
-                  type="search"
-                  placeholder="Naziv | br. parcele"
-                  aria-label="Search"
-                  name="searchTerm"
-                  [(ngModel)]="searchTerm"
-                  (ngModelChange)="filterMarkers()"
-                  (input)="handleSearchInput($event)"
-                />
-                <span class="input-group-append">
-                  <span class="input-group-text">
-                    <i
-                      class="fas-sharp fa-solid fa-magnifying-glass-location"
-                      style="color: #27a27a"
-                    ></i>
-                  </span>
-                </span>
-
-                <ul
-                  class="list-group search-suggestions"
-                  *ngIf="showSearchSuggestions"
-                >
-                  <li
-                    class="list-group-item"
-                    *ngFor="let suggestion of searchSuggestions | slice : 0 : 6"
-                    (click)="selectSearchSuggestion(suggestion)"
-                  >
-                    <span
-                      [innerHTML]="
-                        suggestion | highlightSearchTerm : searchTerm
-                      "
-                    ></span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <!-- end of the div for search form -->
-          </div>
-          <!-- outer div for select forms -->
-          <div
-            class="collapse navbar-collapse justify-content-end"
-            id="navbarSupportedContent"
-          >
-            <!-- inner div for select forms -->
-            <div class="navbar-nav">
-              <!-- select tag for choosing categories of objects -->
-              <select
-                name="vakufType"
-                class="form-select m-1"
-                aria-label="Tip"
-                [(ngModel)]="selectedVakufType"
-                (ngModelChange)="filterMarkers()"
-                (ngModelChange)="resetSelectedVakufNames()"
-              >
-                <option value="" selected>Tip</option>
-                <option *ngFor="let type of vakufObjectTypes" [value]="type">
-                  {{ type }}
-                </option>
-                <!-- end select tag for choosing categories of objects -->
-              </select>
-              <!-- end inner div for select forms -->
-            </div>
-
-            <!-- div tag for choosing cities -->
-            <div class="navbar-nav">
-              <!-- select tag for choosing cities -->
-              <select
-                name="selectedCity"
-                class="form-select m-1"
-                aria-label="Grad"
-                [(ngModel)]="selectedCity"
-                (ngModelChange)="filterMarkers()"
-                (ngModelChange)="resetSelectedVakufNames()"
-              >
-                <option value="" selected>Grad</option>
-                <option *ngFor="let cityName of vakufCities" [value]="cityName">
-                  {{ cityName }}
-                </option>
-
-                <!-- end select tag for choosing places of objects -->
-              </select>
-            </div>
-
-            <!-- inner div tag for choosing name of the objects -->
-            <div class="navbar-nav">
-              <!--  select tag for choosing name of the objects -->
-              <select
-                name="filteredVakufNames"
-                class="form-select m-1"
-                aria-label="Naziv Vakufa"
-                [(ngModel)]="filteredVakufNames"
-                (ngModelChange)="filterMarkers()"
-                *ngIf="selectedVakufType || selectedCity"
-              >
-                <option value="" selected>Naziv</option>
-                <option
-                  *ngFor="let name of visibleVakufNames"
-                  [value]="name.vakufName"
-                >
-                  {{ name.vakufName | ellipsis : 25 }}
-                </option>
-
-                <!--  end select tag for choosing name of the objects -->
-              </select>
-
-              <!--  select tag for choosing name of the objects full list-->
-              <select
-                name="filteredVakufNames_source"
-                class="form-select m-1"
-                aria-label="Naziv Vakufa"
-                [(ngModel)]="filteredVakufNames"
-                (ngModelChange)="filterMarkers()"
-                *ngIf="!selectedVakufType && !selectedCity"
-              >
-                <option value="" selected>Naziv</option>
-                <option *ngFor="let name of markers" [value]="name.vakufName">
-                  {{ name.vakufName | ellipsis : 25 }}
-                </option>
-
-                <!--  end select tag for choosing name of the objects full list -->
-              </select>
-            </div>
-            <!-- end div for select forms -->
-          </div>
-          <!-- end of the div container fluid -->
-        </div>
-        <!-- navbar ends -->
-      </nav>
-      <!-- div cols -->
-    </div>
-    <!-- end of the div for the navbars and forms -->
-  </div>
+  </div> <!-- end row navbar -->
 
   <div class="row">
     <div class="col">
       <div #mapContainer id="map-canvas"></div>
     </div>
   </div>
-</div>
-<!-- end of the main cointainer div tag-->
+
+</div> <!-- end main cointainer -->
+

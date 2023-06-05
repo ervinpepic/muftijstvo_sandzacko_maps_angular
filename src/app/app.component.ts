@@ -1,30 +1,14 @@
-import {
-  AfterViewInit,
-  Component,
-  ViewChild,
-  ElementRef,
-  ChangeDetectorRef,
-} from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { AfterViewInit, Component, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
+import { Loader } from '@googlemaps/js-api-loader'; //Google async MAPS API loader
+import { GOOGLEAPIKEY } from 'src/env'; // API key from env file
 
-//Google async MAPS API loader
-import { Loader } from '@googlemaps/js-api-loader';
-//API key from env file
-import { GOOGLEAPIKEY } from 'src/env';
+import { MarkerService } from './marker.service'; //marker service
 
-//marker interface
-import { CustomMarker } from './marker/Marker';
+import { StylingMarkers } from './marker/styling/marker-style'; //Styling imports
+import { MarkerEvents } from './marker/events/marker-events'; //Evemts imports
+import { mapStyling } from './map/map-style'; //map stype
 
-//Styling imports
-import { StylingMarkers } from './marker/styling/marker-style';
-import { MarkerEvents } from './marker/events/marker-events';
-import { mapStyling } from './map/map-style';
-
-//Data sets import
-import { PolygonsBoundaries } from './polygons/map-polygons';
-
-import { Subject } from 'rxjs';
-import { MarkerService } from './marker.service';
+import { PolygonsBoundaries } from './polygons/map-polygons';//Data sets import
 
 @Component({
   selector: 'app-root',
@@ -32,34 +16,19 @@ import { MarkerService } from './marker.service';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements AfterViewInit {
-  //use for reference child component into the app compoment with gmap
+  //use for reference child component into the app compoment with mapContainer
   //when creating map
   @ViewChild('mapContainer', { static: false }) mapContainer?: ElementRef;
-  @ViewChild('searchInput') searchInput!: ElementRef;
 
-  constructor(
-    private markerService: MarkerService,
-    private cdr: ChangeDetectorRef
-  ) {}
-  //class member for title
-  title = 'Muftijstvo Sandžačko Mape Vakufa';
-
-  //class members for search and filtering ngModel in app.component.html
-  searchTerm: string = ''; //used in search bar form
-  selectedVakufType?: string = ''; //used in select dropdown menu for type of object
-  selectedCity?: string = ''; //used in select dropdown menu for place
-  filteredVakufNames?: string = ''; //used in select dropdown menu for place name after filtering and before filtering
-  searchSuggestions: string[] = [];
-  showSearchSuggestions: boolean = false;
-  searchControl: FormControl = new FormControl();
-  search$ = new Subject<string>();
-  //Arrays of markers after filtering using filterMarker() function
-  visibleVakufNames?: CustomMarker[] = [];
+  constructor(private markerService: MarkerService,private cdr: ChangeDetectorRef) {}
+  
+  title = 'Muftijstvo Sandžačko Mape Vakufa'; //class member for title
+ 
+  //input members for child component app-navbar
   vakufObjectTypes: string[] = [];
   vakufCities: string[] = [];
 
-  //Arrays of markers data
-  markers: any[] = [];
+  markers: any[] = []; //Arrays of markers data
 
   //google maps initializatior and setup
   map?: google.maps.Map;
@@ -70,14 +39,13 @@ export class AppComponent implements AfterViewInit {
   };
   mapZoom = 9;
 
-  //marker styling functions from separated modules
+  //marker styling methods
   markerEvents = new MarkerEvents();
   markerStyling = new StylingMarkers();
 
-  //map polygon boundaries for Sandzak
-  polygons = new PolygonsBoundaries();
+  polygons = new PolygonsBoundaries(); //map polygon boundaries for Sandzak
 
-  //mandatory for AfterViewInit decorator
+  //mandatory method for AfterViewInit decorator
   ngAfterViewInit(): void {
     const googleApiAsyncLoader = new Loader({
       apiKey: GOOGLEAPIKEY,
@@ -87,25 +55,25 @@ export class AppComponent implements AfterViewInit {
     googleApiAsyncLoader.load().then(() => {
       this.createMap();
     });
-    this.loadVakufObjectTypes();
-    this.loadVakufCities();
+    //load methods for generating cities and type of objects
+    this.loadObjectTypes();
+    this.loadCities();
   }
 
-  //google maps initialization
+  //google maps creation
   createMap(): void {
     this.map = new google.maps.Map(this.mapContainer!.nativeElement, {
       center: this.mapCenter,
       zoom: this.mapZoom,
       styles: this.mapStyle,
     });
-    //call addMarkers() for creating markers in this map
-    this.getMarkers();
-    //call for polygons creation
-    this.polygons.drawPolgygons(this.map);
+
+    this.createMarkers(); //method call addMarkers() for creating markers in this map
+    this.polygons.drawPolgygons(this.map); //method call for polygons creation
   }
 
-  //logic for adding markers to the map
-  getMarkers() {
+  //creating markers method
+  createMarkers() {
     this.markerService.getMarkers().subscribe((markerData) => {
       this.markers = [];
       markerData.forEach((data) => {
@@ -117,98 +85,27 @@ export class AppComponent implements AfterViewInit {
           optimized: false,
           animation: google.maps.Animation.DROP,
         });
-
         //style for markers
         this.markerEvents.markerInfoWindow(marker, data, this.map);
         this.markerEvents.markerMouseOver(marker);
         this.markerEvents.markerMouseOut(marker);
 
-        //add extracted markers to the array of markers
-        this.markers.push(marker);
-        marker.setMap(this.map!);
+        this.markers.push(marker);//add extracted markers to the array of markers
+        marker.setMap(this.map!);//set map
       });
     });
   }
 
-  //filtering markers with multiple params
-  filterMarkers() {
-    const visibleMarkers: any[] = [];
-
-    this.markers.forEach((marker) => {
-      const isVisible =
-        (!this.selectedCity || marker.city === this.selectedCity) &&
-        (!this.selectedVakufType ||
-          marker.vakufType === this.selectedVakufType) &&
-        (!this.filteredVakufNames ||
-          marker.vakufName === this.filteredVakufNames) &&
-        (!this.searchTerm ||
-          marker.vakufName
-            .toLowerCase()
-            .includes(this.searchTerm.toLowerCase()) ||
-          !this.searchTerm ||
-          marker.cadastralParcelNumber
-            .toLowerCase()
-            .includes(this.searchTerm.toLowerCase()));
-      marker.setVisible(isVisible);
-
-      if (isVisible) {
-        visibleMarkers.push(marker);
-      }
-    });
-
-    //added visible markers after filtering to the visible marker array
-    this.visibleVakufNames = visibleMarkers;
-  }
-
-  resetSelectedVakufNames(): void {
-    this.filteredVakufNames = '';
-    this.filterMarkers();
-  }
-
-  generateSearchSuggestions(value: string) {
-    this.searchSuggestions = []; // Clear the array before generating suggestions
-    this.markers.forEach((marker) => {
-      if (marker.vakufName.toLowerCase().includes(value.toLowerCase())) {
-        this.searchSuggestions.push(marker.vakufName);
-      }
-      if (
-        marker.cadastralParcelNumber.toLowerCase().includes(value.toLowerCase())
-      ) {
-        const suggestion =
-          marker.cadastralParcelNumber + ' (' + marker.vakufName + ')';
-        this.searchSuggestions.push(suggestion);
-      }
-    });
-  }
-
-  handleSearchInput(event: Event) {
-    const inputElement = event.target as HTMLInputElement;
-    const value = inputElement.value;
-
-    this.searchControl.setValue(value);
-
-    if (value.length > 0) {
-      this.generateSearchSuggestions(value);
-      this.showSearchSuggestions = true;
-    } else {
-      this.showSearchSuggestions = false;
-    }
-  }
-
-  selectSearchSuggestion(suggestion: string) {
-    this.searchTerm = suggestion;
-    this.showSearchSuggestions = false;
-    this.filterMarkers();
-  }
-
-  loadVakufObjectTypes() {
+  //async load for types of vakuf objects from services
+  loadObjectTypes() {
     this.markerService.getVakufObjectTypes().subscribe((vakufTypes) => {
       this.vakufObjectTypes = vakufTypes;
     });
     this.cdr.detectChanges();
   }
 
-  loadVakufCities() {
+//async load for cities from services
+  loadCities() {
     this.markerService.getVakufCities().subscribe((cities) => {
       this.vakufCities = cities;
     });

@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { CustomMarker } from './marker/Marker';
-import { VakufData } from './database/database-seed';
 import { Observable, of } from 'rxjs';
-import { vakufObjecType } from './database/vakuf-types';
+
+import { CustomMarker } from './marker/Marker';
 import { sandzakCity } from './database/sandzak-cities';
+import { VakufData } from './database/database-seed';
+import { vakufObjecType } from './database/vakuf-types';
 
 @Injectable({
   providedIn: 'root',
