@@ -8,6 +8,7 @@ import { HighlightSearchTermPipe } from './highlight-search-term.pipe';
 import { NavbarComponent } from './navbar-component/navbar.component';
 
 
+
 @NgModule({
   declarations: [AppComponent, EllipsisPipe, HighlightSearchTermPipe, NavbarComponent],
   imports: [BrowserModule, FormsModule, AppRoutingModule],

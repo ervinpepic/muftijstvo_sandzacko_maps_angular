@@ -1,71 +1,66 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+
 import { CustomMarker } from '../marker/Marker'; // Marker interface
+import { MarkerService } from '../marker.service';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css'],
 })
-
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
+  constructor(private markerService: MarkerService) {}
 
   searchControl: FormControl = new FormControl();
 
+  //ngModel bindingd
   searchTerm: string = '';
-  showSearchSuggestions: boolean = false;
-  searchSuggestions: string[] = [];
-  selectedVakufType?: string = '';
   selectedCity?: string = '';
   filteredVakufNames?: string = '';
+  selectedVakufType?: string = '';
+
+  //arrays
+  markers: any[] = [];
+  vakufCities: string[] = [];
+  vakufObjectTypes: string[] = [];
   visibleVakufNames?: CustomMarker[] = [];
 
-  @Input() vakufCities: string[] = [];
-  @Input() vakufObjectTypes: string[] = [];
-  @Input() markers: any[] = [];
+  //serach suggestions bindings
+  showSearchSuggestions: boolean = false;
+  searchSuggestions: string[] = [];
 
-  filterMarkers() {
-    const visibleMarkers: any[] = [];
+  //mandatory for OnInit decorator
+  ngOnInit(): void {
+    this.getMarkersNames();
+    this.vakufObjectTypes = this.markerService.loadObjectTypes();
+    this.vakufCities = this.markerService.loadCities();
+  }
 
-    this.markers.forEach((marker) => {
-      const isVisible =
-        (!this.selectedCity || marker.city === this.selectedCity) &&
-        (!this.selectedVakufType ||
-          marker.vakufType === this.selectedVakufType) &&
-        (!this.filteredVakufNames ||
-          marker.vakufName === this.filteredVakufNames) &&
-        (!this.searchTerm ||
-          marker.vakufName
-            .toLowerCase()
-            .includes(this.searchTerm.toLowerCase()) ||
-          marker.cadastralParcelNumber
-            .toLowerCase()
-            .includes(this.searchTerm.toLowerCase()));
-      marker.setVisible(isVisible);
-
-      if (isVisible) {
-        visibleMarkers.push(marker);
-      }
+  //get markerVakufNames
+  getMarkersNames(): void {
+    this.markerService.getMarkers().subscribe((rawMarkerData) => {
+      rawMarkerData.forEach((markerVakufName) => {
+        this.markers.push(markerVakufName.vakufName);
+      });
     });
-
-    this.visibleVakufNames = visibleMarkers;
   }
 
-  resetSelectedVakufNames(): void {
-    this.filteredVakufNames = '';
-    this.filterMarkers();
+//filter markers from marker service
+  filterMarkers(): void {
+    this.markerService.filterMarkers(
+      this.searchTerm,
+      this.selectedCity!,
+      this.filteredVakufNames!,
+      this.selectedVakufType!,
+      this.visibleVakufNames!
+    );
   }
 
-  selectSearchSuggestion(suggestion: string) {
-    const cadastarParcelNumber = suggestion.split(' ')[0]; // Extract the cadastarParcelNumber from the suggestion
-    this.searchTerm = cadastarParcelNumber; // Set the searchTerm to the cadastarParcelNumber
-    this.showSearchSuggestions = false;
-    this.filterMarkers();
-  }
-
-  generateSearchSuggestions(value: string) {
+  //generating suggestions based on typings
+  generateSearchSuggestions(value: string): void {
     this.searchSuggestions = []; // Clear the array before generating suggestions
-    this.markers.forEach((marker) => {
+    this.markerService.markers.forEach((marker) => {
       if (marker.vakufName.toLowerCase().includes(value.toLowerCase())) {
         this.searchSuggestions.push(marker.vakufName);
       }
@@ -77,6 +72,14 @@ export class NavbarComponent {
         this.searchSuggestions.push(suggestion);
       }
     });
+  }
+
+  //selecting vakuf type when searhc
+  selectSearchSuggestion(suggestion: string): void {
+    const cadastarParcelNumber = suggestion.split(' ')[0]; // Extract the cadastarParcelNumber from the suggestion
+    this.searchTerm = cadastarParcelNumber; // Set the searchTerm to the cadastarParcelNumber
+    this.showSearchSuggestions = false;
+    this.filterMarkers();
   }
 
   handleSearchInput(event: Event) {
@@ -91,5 +94,11 @@ export class NavbarComponent {
     } else {
       this.showSearchSuggestions = false;
     }
+  }
+
+  //reset vakuf name after changing type of vakuf
+  resetSelectedVakufNames(): void {
+    this.filteredVakufNames = '';
+    this.filterMarkers();
   }
 }
