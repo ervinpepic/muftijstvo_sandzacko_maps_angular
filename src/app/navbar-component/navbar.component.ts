@@ -3,6 +3,7 @@ import { FormControl } from '@angular/forms';
 
 import { CustomMarker } from '../marker/Marker'; // Marker interface
 import { MarkerService } from '../marker.service';
+import { GenerateSuggestionsService } from '../generate-suggestions.service';
 
 @Component({
   selector: 'app-navbar',
@@ -10,7 +11,10 @@ import { MarkerService } from '../marker.service';
   styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements OnInit {
-  constructor(private markerService: MarkerService) {}
+  constructor(
+    private markerService: MarkerService,
+    private searchSuggestionService: GenerateSuggestionsService
+  ) {}
 
   searchControl: FormControl = new FormControl();
 
@@ -37,41 +41,23 @@ export class NavbarComponent implements OnInit {
     this.vakufCities = this.markerService.loadCities();
   }
 
-  //get markerVakufNames
-  getMarkersNames(): void {
-    this.markerService.getMarkers().subscribe((rawMarkerData) => {
-      rawMarkerData.forEach((markerVakufName) => {
-        this.markers.push(markerVakufName.vakufName);
-      });
-    });
-  }
-
-//filter markers from marker service
+  //filter markers localy
   filterMarkers(): void {
     this.markerService.filterMarkers(
-      this.searchTerm,
+      this.markerService.markers,
       this.selectedCity!,
-      this.filteredVakufNames!,
       this.selectedVakufType!,
-      this.visibleVakufNames!
+      this.filteredVakufNames!,
+      this.searchTerm
     );
+    this.visibleVakufNames = this.markerService.visibleVakufNames;
+    console.log(this.visibleVakufNames)
   }
 
   //generating suggestions based on typings
   generateSearchSuggestions(value: string): void {
-    this.searchSuggestions = []; // Clear the array before generating suggestions
-    this.markerService.markers.forEach((marker) => {
-      if (marker.vakufName.toLowerCase().includes(value.toLowerCase())) {
-        this.searchSuggestions.push(marker.vakufName);
-      }
-      if (
-        marker.cadastralParcelNumber.toLowerCase().includes(value.toLowerCase())
-      ) {
-        const suggestion =
-          marker.cadastralParcelNumber + ' (' + marker.vakufName + ')';
-        this.searchSuggestions.push(suggestion);
-      }
-    });
+    this.searchSuggestions =
+      this.searchSuggestionService.generateSearchSuggestions(value);
   }
 
   //selecting vakuf type when searhc
@@ -100,5 +86,14 @@ export class NavbarComponent implements OnInit {
   resetSelectedVakufNames(): void {
     this.filteredVakufNames = '';
     this.filterMarkers();
+  }
+
+  //get markerVakufNames
+  getMarkersNames(): void {
+    this.markerService.getMarkers().subscribe((rawMarkerData) => {
+      rawMarkerData.forEach((markerVakufName) => {
+        this.markers.push(markerVakufName.vakufName);
+      });
+    });
   }
 }

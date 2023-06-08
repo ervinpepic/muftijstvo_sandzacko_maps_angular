@@ -16,11 +16,12 @@ export class MarkerService {
   markers: any[] = [];
   vakufCities: string[] = [];
   vakufTypes: string[] = [];
+  visibleVakufNames?: CustomMarker[] = [];
 
   //marker styling methods
   markerEvents = new MarkerEvents();
   markerStyling = new StylingMarkers();
-  constructor() {}
+  constructor() { }
 
   getMarkers(): Observable<CustomMarker[]> {
     const vakufData = of(VakufData);
@@ -77,15 +78,15 @@ export class MarkerService {
 
   // filter markers method
   filterMarkers(
-    searchTerm: string,
+    markers: any[],
     selectedCity: string,
-    filteredVakufNames: string,
     selectedVakufType: string,
-    visibleVakufNames: CustomMarker[]
+    filteredVakufNames: string,
+    searchTerm: string
   ): void {
-    const visibleMarkers: any[] = [];
+    const visibleMarkers: CustomMarker[] = [];
 
-    this.markers.forEach((marker) => {
+    markers.forEach((marker) => {
       const isVisible =
         (!selectedCity || marker.city === selectedCity) &&
         (!selectedVakufType || marker.vakufType === selectedVakufType) &&
@@ -101,7 +102,6 @@ export class MarkerService {
         visibleMarkers.push(marker);
       }
     });
-
-    visibleVakufNames = visibleMarkers;
+    this.visibleVakufNames = visibleMarkers
   }
 }
