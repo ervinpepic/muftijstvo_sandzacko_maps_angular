@@ -51,6 +51,7 @@ export class NavbarComponent implements OnInit {
       this.searchTerm
     );
     this.visibleVakufNames = this.markerService.visibleVakufNames;
+    this.resetSelectedVakufNames();
     console.log(this.visibleVakufNames)
   }
 
@@ -85,7 +86,6 @@ export class NavbarComponent implements OnInit {
   //reset vakuf name after changing type of vakuf
   resetSelectedVakufNames(): void {
     this.filteredVakufNames = '';
-    this.filterMarkers();
   }
 
   //get markerVakufNames

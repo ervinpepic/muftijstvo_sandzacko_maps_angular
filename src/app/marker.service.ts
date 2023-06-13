@@ -99,7 +99,20 @@ export class MarkerService {
       marker.setVisible(isVisible);
 
       if (isVisible) {
-        visibleMarkers.push(marker);
+        const customMarker: CustomMarker = {
+          vakufName: marker.vakufName,
+          vakufType: marker.vakufType,
+          city: marker.city,
+          cadastralMunicipality: marker.cadastralMunicipality,
+          cadastralParcelNumber: marker.cadastralParcelNumber,
+          realEstateNumber: marker.realEstateNumber,
+          areaSize: marker.areaSize,
+          yearFounded: marker.yearFounded,
+          streetName: marker.streetName,
+          vakufImage: marker.vakufImage,
+          position: marker.position
+        };
+        visibleMarkers.push(customMarker);
       }
     });
     this.visibleVakufNames = visibleMarkers
