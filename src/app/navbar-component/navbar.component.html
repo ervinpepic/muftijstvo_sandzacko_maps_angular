@@ -64,7 +64,7 @@
           name="vakufType"
           aria-label="Tip"
           [(ngModel)]="selectedVakufType"
-          (ngModelChange)="filterMarkers()"
+          (ngModelChange)="filterMarkers(); resetSelectedVakufNames()"
         >
           <option value="" selected>Tip</option>
           <option *ngFor="let vakufType of vakufObjectTypes" [value]="vakufType">
@@ -79,7 +79,7 @@
           name="selectedCity"
           aria-label="Grad"
           [(ngModel)]="selectedCity"
-          (ngModelChange)="filterMarkers()"
+          (ngModelChange)="filterMarkers(); resetSelectedVakufNames()"
         >
           <option value="" selected>Grad</option>
           <option *ngFor="let cityName of vakufCities" [value]="cityName">
