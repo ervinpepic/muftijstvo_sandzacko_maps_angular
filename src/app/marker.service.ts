@@ -21,11 +21,11 @@ export class MarkerService {
   //marker styling methods
   markerEvents = new MarkerEvents();
   markerStyling = new StylingMarkers();
-  constructor() { }
+
+  constructor() {}
 
   getMarkers(): Observable<CustomMarker[]> {
-    const vakufData = of(VakufData);
-    return vakufData;
+    return of(VakufData);
   }
 
   getVakufObjectTypes(): Observable<string[]> {
@@ -37,10 +37,34 @@ export class MarkerService {
   }
 
   //creating markers method
-  createMarkers(map: google.maps.Map) {
-    this.getMarkers().subscribe((markerData) => {
+  // createMarkers(map: google.maps.Map) {
+  //   this.getMarkers().subscribe((markerData) => {
+  //     this.markers = [];
+  //     markerData.forEach((data) => {
+  //       const marker = new google.maps.Marker({
+  //         ...data,
+  //         position: new google.maps.LatLng(data.position),
+  //         icon: this.markerStyling.markerIconDefaultCreate(),
+  //         draggable: false,
+  //         optimized: false,
+  //         animation: google.maps.Animation.DROP,
+  //       });
+  //       //style for markers
+  //       this.markerEvents.markerInfoWindow(marker, data, map);
+  //       this.markerEvents.markerMouseOver(marker);
+  //       this.markerEvents.markerMouseOut(marker);
+
+  //       this.markers.push(marker); //add extracted markers to the array of markers
+  //       marker.setMap(map); //set map
+  //     });
+  //   });
+  // }
+
+  async createMarkers(map: google.maps.Map) {
+    try {
+      const markerData = await this.getMarkers().toPromise();
       this.markers = [];
-      markerData.forEach((data) => {
+      markerData?.forEach((data) => {
         const marker = new google.maps.Marker({
           ...data,
           position: new google.maps.LatLng(data.position),
@@ -57,23 +81,19 @@ export class MarkerService {
         this.markers.push(marker); //add extracted markers to the array of markers
         marker.setMap(map); //set map
       });
-    });
+    } catch (error) {
+      console.error('Error creating markers', error);
+    }
   }
 
   //async load for types from services
-  loadObjectTypes(): string[] {
-    this.getVakufObjectTypes().subscribe((vakufTypes) => {
-      this.vakufTypes = vakufTypes;
-    });
-    return this.vakufTypes;
+  loadObjectTypes(): Observable<string[]> {
+    return this.getVakufObjectTypes();
   }
 
   //async load for cities from services
-  loadCities(): string[] {
-    this.getVakufCities().subscribe((cities) => {
-      this.vakufCities = cities;
-    });
-    return this.vakufCities;
+  loadCities(): Observable<string[]> {
+    return this.getVakufCities();
   }
 
   // filter markers method
@@ -110,11 +130,11 @@ export class MarkerService {
           yearFounded: marker.yearFounded,
           streetName: marker.streetName,
           vakufImage: marker.vakufImage,
-          position: marker.position
+          position: marker.position,
         };
         visibleMarkers.push(customMarker);
       }
     });
-    this.visibleVakufNames = visibleMarkers
+    this.visibleVakufNames = visibleMarkers;
   }
 }

@@ -19,15 +19,15 @@ export class NavbarComponent implements OnInit {
   searchControl: FormControl = new FormControl();
 
   //ngModel bindingd
-  searchTerm: string = '';
-  selectedCity?: string = '';
-  filteredVakufNames?: string = '';
-  selectedVakufType?: string = '';
+  searchTerm = '';
+  selectedCity? = '';
+  filteredVakufNames? = '';
+  selectedVakufType? = '';
 
   //arrays
   markers: any[] = [];
-  vakufCities: string[] = [];
-  vakufObjectTypes: string[] = [];
+  vakufCities: string[] | undefined = [];
+  vakufObjectTypes: string[] | undefined = [];
   visibleVakufNames?: CustomMarker[] = [];
 
   //serach suggestions bindings
@@ -35,10 +35,16 @@ export class NavbarComponent implements OnInit {
   searchSuggestions: string[] = [];
 
   //mandatory for OnInit decorator
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
     this.getMarkersNames();
-    this.vakufObjectTypes = this.markerService.loadObjectTypes();
-    this.vakufCities = this.markerService.loadCities();
+    try {
+      this.vakufObjectTypes = await this.markerService
+        .loadObjectTypes()
+        .toPromise();
+      this.vakufCities = await this.markerService.loadCities().toPromise();
+    } catch (error) {
+      console.log('error in loading objects and cities', error);
+    }
   }
 
   //filter markers localy
@@ -51,7 +57,7 @@ export class NavbarComponent implements OnInit {
       this.searchTerm
     );
     this.visibleVakufNames = this.markerService.visibleVakufNames;
-    console.log(this.visibleVakufNames)
+    console.log(this.visibleVakufNames);
   }
 
   //generating suggestions based on typings
@@ -70,12 +76,12 @@ export class NavbarComponent implements OnInit {
 
   handleSearchInput(event: Event) {
     const inputElement = event.target as HTMLInputElement;
-    const value = inputElement.value;
+    this.searchControl.setValue(inputElement.value);
 
-    this.searchControl.setValue(value);
+    // this.searchControl.setValue(value);
 
-    if (value.length > 0) {
-      this.generateSearchSuggestions(value);
+    if (inputElement.value.length > 0) {
+      this.generateSearchSuggestions(inputElement.value);
       this.showSearchSuggestions = true;
     } else {
       this.showSearchSuggestions = false;
@@ -88,14 +94,17 @@ export class NavbarComponent implements OnInit {
       this.filteredVakufNames = '';
       this.filterMarkers();
     }
-  }  
+  }
 
   //get markerVakufNames
-  getMarkersNames(): void {
-    this.markerService.getMarkers().subscribe((rawMarkerData) => {
-      rawMarkerData.forEach((markerVakufName) => {
-        this.markers.push(markerVakufName.vakufName);
-      });
-    });
+  async getMarkersNames(): Promise<void> {
+    try {
+      const rawMarkerData = await this.markerService.getMarkers().toPromise();
+      this.markers =
+        rawMarkerData?.map((markerVakufName) => markerVakufName.vakufName) ??
+        [];
+    } catch (error) {
+      console.log('Error fetching marker data', error);
+    }
   }
 }
