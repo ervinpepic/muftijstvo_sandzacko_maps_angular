@@ -11,7 +11,7 @@ export function infoWindowStyling(marker: any) {
           '<hr>' +
           "<p class='lead'>" + 
             '<span><strong>' +
-              "<i class='fa-solid fa-calendar-days'></i> Godina izgradnje: " +
+              "<i class='fa-solid fa-calendar-days'></i> Godina izgradnje-uvakufljenja: " +
             '</strong></span>' + marker.yearFounded + ' godine' +
           '</p>' +
           "<p class='lead'>" +

@@ -68,8 +68,15 @@ export class NavbarComponent implements OnInit {
 
   //selecting vakuf type when searhc
   selectSearchSuggestion(suggestion: string): void {
-    const cadastarParcelNumber = suggestion.split(' ')[0]; // Extract the cadastarParcelNumber from the suggestion
-    this.searchTerm = cadastarParcelNumber; // Set the searchTerm to the cadastarParcelNumber
+    const parts = suggestion.split(' ');// Split the suggestion into parts
+    const numberPart = parts[0]; // Split the suggestion into parts
+    // Check if the number part is a numeric string before setting it as the search term
+    if (/^\d+$/.test(numberPart)) {
+      this.searchTerm = numberPart;
+    } else {
+      this.searchTerm = suggestion; // If it's not numeric, set the entire suggestion
+    }
+    
     this.showSearchSuggestions = false;
     this.filterMarkers();
   }
