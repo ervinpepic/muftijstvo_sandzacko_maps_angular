@@ -63,7 +63,7 @@ export class NavbarComponent implements OnInit {
   //generating suggestions based on typings
   generateSearchSuggestions(value: string): void {
     this.searchSuggestions =
-      this.searchSuggestionService.generateSearchSuggestions(value);
+      this.searchSuggestionService.generateSearchSuggestions(value, this.visibleVakufNames || []);
   }
 
   //selecting vakuf type when searhc
