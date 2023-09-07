@@ -102,7 +102,7 @@ export class MarkerService {
     selectedCity: string,
     selectedVakufType: string,
     filteredVakufNames: string,
-    searchTerm: string
+    searchTerm: string,
   ): void {
     const visibleMarkers: CustomMarker[] = [];
 

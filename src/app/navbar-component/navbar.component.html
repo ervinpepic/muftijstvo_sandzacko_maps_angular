@@ -24,7 +24,9 @@
 
     <!-- for search form-->
     <div
-      class="collapse navbar-collapse justify-content-start" id="navbarSupportedContent">
+      class="collapse navbar-collapse justify-content-start"
+      id="navbarSupportedContent"
+    >
       <div class="col-md-6 col">
         <div class="input-group m-1">
           <!-- input group -->
@@ -40,23 +42,37 @@
           />
           <span class="input-group-append">
             <span class="input-group-text">
-              <i class="fas-sharp fa-solid fa-magnifying-glass-location" style="color: #27a27a"></i>
+              <i
+                class="fas-sharp fa-solid fa-magnifying-glass-location"
+                style="color: #27a27a"
+              ></i>
             </span>
           </span>
-          <ul class="list-group search-suggestions" *ngIf="showSearchSuggestions">
+          <ul
+            class="list-group search-suggestions"
+            *ngIf="showSearchSuggestions"
+          >
             <li
               class="list-group-item"
               *ngFor="let suggestion of searchSuggestions | slice : 0 : 6"
               (click)="selectSearchSuggestion(suggestion)"
             >
-              <span [innerHTML]="suggestion | highlightSearchTerm : searchTerm"></span>
+              <span
+                [innerHTML]="suggestion | highlightSearchTerm : searchTerm"
+              ></span>
             </li>
           </ul>
-        </div> <!-- end input group -->
+        </div>
+        <!-- end input group -->
       </div>
-    </div> <!-- end search form-->
-    
-    <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent"> <!-- select forms -->
+    </div>
+    <!-- end search form-->
+
+    <div
+      class="collapse navbar-collapse justify-content-end"
+      id="navbarSupportedContent"
+    >
+      <!-- select forms -->
       <div class="navbar-nav">
         <!-- select forms -->
         <select
@@ -64,31 +80,39 @@
           name="vakufType"
           aria-label="Tip"
           [(ngModel)]="selectedVakufType"
-          (ngModelChange)="filterMarkers(); resetSelectedVakufNames()"
+          (ngModelChange)="filterMarkers(); resetCity();"
         >
           <option value="" selected>Tip</option>
-          <option *ngFor="let vakufType of vakufObjectTypes" [value]="vakufType">
+          <option
+            *ngFor="let vakufType of vakufObjectTypes"
+            [value]="vakufType"
+          >
             {{ vakufType }}
           </option>
-        </select><!-- end select for categories of objects -->
-      </div><!-- end select forms -->
-    
-      <div class="navbar-nav"><!-- choosing cities -->
-      <select
+        </select> <!-- end select for categories of objects -->
+      </div>
+      <!-- end select forms -->
+
+      <div class="navbar-nav">
+        <!-- choosing cities -->
+        <select
           class="form-select m-1"
           name="selectedCity"
           aria-label="Grad"
           [(ngModel)]="selectedCity"
-          (ngModelChange)="filterMarkers(); resetSelectedVakufNames()"
+          (ngModelChange)="filterMarkers(); resetSelectedVakufNames();"
         >
           <option value="" selected>Grad</option>
           <option *ngFor="let cityName of vakufCities" [value]="cityName">
             {{ cityName }}
           </option>
-        </select> <!-- end select for places of objects -->
-      </div> <!-- end choosing cities -->
+        </select>
+        <!-- end select for places of objects -->
+      </div>
+      <!-- end choosing cities -->
 
-      <div class="navbar-nav"> <!-- inner navbar for objects -->
+      <div class="navbar-nav">
+        <!-- inner navbar for objects -->
         <select
           class="form-select m-1"
           name="filteredVakufNames"
@@ -98,13 +122,21 @@
         >
           <option value="" selected>Naziv</option>
           <option
-            *ngFor="let name of selectedVakufType || selectedCity ? visibleVakufNames : markers"
-            [value]="name.vakufName || name"
+            *ngFor="
+              let name of selectedMarkerNames.length > 0
+                ? selectedMarkerNames
+                : markers
+            "
+            [value]="name"
           >
-            {{ name.vakufName || name | ellipsis : 25 }}
+            {{ name | ellipsis : 25 }}
           </option>
         </select>
-      </div> <!-- end for select forms -->
-    </div> <!-- end container fluid -->
-  </div> <!--end inner container for nav -->
-</nav> <!-- navbar ends -->
+      </div>
+      <!-- end for select forms -->
+    </div>
+    <!-- end container fluid -->
+  </div>
+  <!--end inner container for nav -->
+</nav>
+<!-- navbar ends -->

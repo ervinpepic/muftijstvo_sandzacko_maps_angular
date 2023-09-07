@@ -34,6 +34,8 @@ export class NavbarComponent implements OnInit {
   showSearchSuggestions: boolean = false;
   searchSuggestions: string[] = [];
 
+  selectedMarkerNames: string[] = [];
+
   //mandatory for OnInit decorator
   async ngOnInit(): Promise<void> {
     this.getMarkersNames();
@@ -57,18 +59,30 @@ export class NavbarComponent implements OnInit {
       this.searchTerm
     );
     this.visibleVakufNames = this.markerService.visibleVakufNames;
-    console.log(this.visibleVakufNames);
-  }
+    this.selectedMarkerNames = this.markerService.markers
+    .filter((marker) => {
+      return (
+        (!this.selectedCity || marker.city === this.selectedCity) &&
+        (!this.selectedVakufType ||
+          marker.vakufType === this.selectedVakufType)
+          );
+        })
+        .map((marker) => marker.vakufName);
+        console.log(this.visibleVakufNames);
+      }
 
   //generating suggestions based on typings
   generateSearchSuggestions(value: string): void {
     this.searchSuggestions =
-      this.searchSuggestionService.generateSearchSuggestions(value, this.visibleVakufNames || []);
+      this.searchSuggestionService.generateSearchSuggestions(
+        value,
+        this.visibleVakufNames || []
+      );
   }
 
   //selecting vakuf type when searhc
   selectSearchSuggestion(suggestion: string): void {
-    const parts = suggestion.split(' ');// Split the suggestion into parts
+    const parts = suggestion.split(' '); // Split the suggestion into parts
     const numberPart = parts[0]; // Split the suggestion into parts
     // Check if the number part is a numeric string before setting it as the search term
     if (/^\d+$/.test(numberPart)) {
@@ -76,7 +90,7 @@ export class NavbarComponent implements OnInit {
     } else {
       this.searchTerm = suggestion; // If it's not numeric, set the entire suggestion
     }
-    
+
     this.showSearchSuggestions = false;
     this.filterMarkers();
   }
@@ -95,12 +109,24 @@ export class NavbarComponent implements OnInit {
     }
   }
 
-  //reset vakuf name after changing type of vakuf
+  selectMarker(markerName: string): void {
+    this.selectedMarkerNames.push(markerName);
+    // You don't need to call filterMarkers here.
+  }
+
+  //reset vakuf name list after changing select tags for citi or vakuf type
   resetSelectedVakufNames(): void {
-    if (this.filteredVakufNames !== '') {
-      this.filteredVakufNames = '';
-      this.filterMarkers();
-    }
+    // Reset selectedMarkerNames here
+    this.selectedMarkerNames = [];
+    this.filteredVakufNames = '';
+    this.filterMarkers();
+  }
+
+  resetCity(): void {
+    // Reset selectedMarkerNames here
+    this.selectedMarkerNames = [];
+    this.selectedCity = '';
+    this.filterMarkers();
   }
 
   //get markerVakufNames
