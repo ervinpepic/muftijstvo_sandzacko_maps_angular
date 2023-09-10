@@ -36,30 +36,6 @@ export class MarkerService {
     return of(Object.values(sandzakCity));
   }
 
-  //creating markers method
-  // createMarkers(map: google.maps.Map) {
-  //   this.getMarkers().subscribe((markerData) => {
-  //     this.markers = [];
-  //     markerData.forEach((data) => {
-  //       const marker = new google.maps.Marker({
-  //         ...data,
-  //         position: new google.maps.LatLng(data.position),
-  //         icon: this.markerStyling.markerIconDefaultCreate(),
-  //         draggable: false,
-  //         optimized: false,
-  //         animation: google.maps.Animation.DROP,
-  //       });
-  //       //style for markers
-  //       this.markerEvents.markerInfoWindow(marker, data, map);
-  //       this.markerEvents.markerMouseOver(marker);
-  //       this.markerEvents.markerMouseOut(marker);
-
-  //       this.markers.push(marker); //add extracted markers to the array of markers
-  //       marker.setMap(map); //set map
-  //     });
-  //   });
-  // }
-
   async createMarkers(map: google.maps.Map) {
     try {
       const markerData = await this.getMarkers().toPromise();
@@ -102,7 +78,7 @@ export class MarkerService {
     selectedCity: string,
     selectedVakufType: string,
     filteredVakufNames: string,
-    searchTerm: string,
+    searchTerm: string
   ): void {
     const visibleMarkers: CustomMarker[] = [];
 

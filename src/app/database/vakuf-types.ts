@@ -1,7 +1,7 @@
 export enum vakufObjecType {
-  dzamija = 'Dzamija',
+  dzamija = 'Džamija',
   zgrada = 'Zgrada',
   livada = 'Livada',
-  suma = 'Suma',
+  suma = 'Šuma',
   groblje = 'Groblje',
 }
