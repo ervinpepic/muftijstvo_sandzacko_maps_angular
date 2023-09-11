@@ -22,29 +22,32 @@ export class NavbarComponent {
   searchControl: FormControl = new FormControl();
 
   //ngModel bindingd
-  searchTerm = '';
-  selectedCity: string = '';
-  selectedVakufType: string = '';
-  filteredVakufNames: string = '';
+  searchQuery = '';
+  selectedCity = '';
+  selectedVakufType = '';
+  filteredVakufNames = '';
 
   //arrays
   markers: CustomMarker[] = [];
   selectedMarkerNames: string[] = [];
-  vakufCities$!: Observable<string[]>;
-  vakufObjectTypes$!: Observable<string[]>;
-  visibleVakufNames?: CustomMarker[] = [];
+  vakufCities$?: Observable<string[]>;
+  vakufObjectTypes$?: Observable<string[]>;
+  filteredMarkers?: CustomMarker[] = [];
 
   //serach suggestions bindings
   showSearchSuggestions: boolean = false;
   searchSuggestions: string[] = [];
 
-  //mandatory for OnInit decorator
+  // error handling
+  errorMessage = '';
+
+  // method for calling objects and cities on the app init
   async vakufObjTypesAndCitiesInit(): Promise<void> {
     try {
       this.vakufObjectTypes$ = this.markerService.loadObjectTypes();
       this.vakufCities$ = this.markerService.loadCities();
     } catch (error) {
-      console.log('error in loading objects and cities', error);
+      this.errorMessage = 'An error occurred while loading data. Please try again later.';
     }
   }
 
@@ -55,23 +58,22 @@ export class NavbarComponent {
       this.selectedCity || '',
       this.selectedVakufType || '',
       this.filteredVakufNames || '',
-      this.searchTerm
+      this.searchQuery
     );
-    this.visibleVakufNames = this.markerService.visibleVakufNames;
-    console.log('Ovo je SelektedMarkerNejms=>' ,this.selectedMarkerNames)
-    console.log('Ovo je VisibleVakufMarkerNejms=>',this.visibleVakufNames);
+    this.filteredMarkers = this.markerService.filteredMarkers;
+    console.log('Ovo je SelektedMarkerNejms=>', this.selectedMarkerNames)
+    console.log('Ovo je VisibleVakufMarkerNejms=>', this.filteredMarkers);
   }
 
   // Arrow function for calling filter function
-  filterMarkersFunc = () => { 
-    this.filteredVakufNames = ''; // Reset filteredVakufNames
-    this.selectedMarkerNames = []; // empty selectedMarkerNames array
+  filterMarkersFunc = () => {
     this.selectedMarkerNames = this.markerService.markers
-    .filter(
-      (marker) =>
-        (!this.selectedCity || marker.city === this.selectedCity) &&
-        (!this.selectedVakufType ||marker.vakufType === this.selectedVakufType)
-    ).map((marker) => marker.vakufName);
+      .filter(
+        (marker) =>
+          (!this.selectedCity || marker.city === this.selectedCity) &&
+          (!this.selectedVakufType || marker.vakufType === this.selectedVakufType)
+      ).map((marker) => marker.vakufName);
+    this.filteredVakufNames = ''
     this.filterMarkers(); // filter markers on the map
   };
 
@@ -80,21 +82,25 @@ export class NavbarComponent {
     const suggestion = (this.searchSuggestions =
       this.searchSuggestionService.generateSearchSuggestions(
         value,
-        this.visibleVakufNames || []
+        this.filteredMarkers || []
       ));
     this.searchSuggestions = suggestion;
   }
 
+  updateSearchQuery(value: string): void {
+    const parts = value.split(' ');
+    const numberPart = parts[0];
+
+    if (/^\d+$/.test(numberPart)) {
+      this.searchQuery = numberPart;
+    } else {
+      this.searchQuery = value;
+    }
+  }
+
   //selecting vakuf type when search
   selectSearchSuggestion(suggestion: string): void {
-    const parts = suggestion.split(' '); // Split the suggestion into parts
-    const numberPart = parts[0]; // Split the suggestion into parts
-    // Check if the number part is a numeric string before setting it as the search term
-    if (/^\d+$/.test(numberPart)) {
-      this.searchTerm = numberPart;
-    } else {
-      this.searchTerm = suggestion; // If it's not numeric, set the entire suggestion
-    }
+    this.updateSearchQuery(suggestion);
     this.showSearchSuggestions = false;
     this.filterMarkers();
   }
@@ -111,5 +117,6 @@ export class NavbarComponent {
     } else {
       this.showSearchSuggestions = false;
     }
+    this.updateSearchQuery(inputElement.value);
   }
 }

@@ -16,13 +16,13 @@ export class MarkerService {
   markers: any[] = [];
   vakufCities: string[] = [];
   vakufTypes: string[] = [];
-  visibleVakufNames?: CustomMarker[] = [];
+  filteredMarkers?: CustomMarker[] = [];
 
   //marker styling methods
   markerEvents = new MarkerEvents();
   markerStyling = new StylingMarkers();
 
-  constructor() {}
+  constructor() { }
 
   getMarkers(): Observable<CustomMarker[]> {
     return of(VakufData);
@@ -111,6 +111,6 @@ export class MarkerService {
         visibleMarkers.push(customMarker);
       }
     });
-    this.visibleVakufNames = visibleMarkers;
+    this.filteredMarkers = visibleMarkers;
   }
 }

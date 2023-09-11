@@ -2,7 +2,6 @@ import {
   Component,
   ViewChild,
   ElementRef,
-  ChangeDetectorRef,
   OnInit,
 } from '@angular/core';
 import { Loader } from '@googlemaps/js-api-loader'; //Google async MAPS API loader
@@ -22,7 +21,7 @@ export class AppComponent implements OnInit {
   //child component reference for component.html
   @ViewChild('mapContainer', { static: true }) mapContainer?: ElementRef;
 
-  constructor(private markerService: MarkerService) {}
+  constructor(private markerService: MarkerService) { }
 
   map?: google.maps.Map; //google maps declaration
 
@@ -47,7 +46,7 @@ export class AppComponent implements OnInit {
       styles: mapStyling,
     });
 
-    this.markerService.createMarkers(this.map); //method call addMarkers() for creating markers in this map
+    this.markerService.createMarkers(this.map); //method call createMarkers() for creating markers in this map
     this.polygons.drawPolgygons(this.map); //method call for polygons creation
   }
 }

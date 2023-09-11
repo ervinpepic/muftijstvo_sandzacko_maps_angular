@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-sm navbar-light navbar-override"> <!-- Navbar Start -->
+<nav class="navbar navbar-expand-md navbar-light navbar-color-override"> <!-- Navbar Start -->
   
   <div class="container-fluid"> <!-- Container-fluid Start -->
     
@@ -37,7 +37,7 @@
             name="searchTerm"
             aria-label="Search"
             placeholder="Naziv | br. parcele"
-            [(ngModel)]="searchTerm"
+            [(ngModel)]="searchQuery"
             (input)="filterMarkers(); handleSearchInput($event)"
           />
           <span class="input-group-append">
@@ -62,7 +62,7 @@
               (click)="selectSearchSuggestion(suggestion)"
             >
               <span
-                [innerHTML]="suggestion | highlightSearchTerm : searchTerm"
+                [innerHTML]="suggestion | highlightSearchTerm : searchQuery"
               >
               </span>
             </li>
@@ -74,6 +74,9 @@
       <!-- ****************************** start select form ******************************-->
       <div class="col-md-6 col"> <!-- Columns Start -->
         <div class="navbar-nav"> <!-- Select Form Start -->
+          <div *ngIf="errorMessage" class="alert alert-danger">
+            {{ errorMessage }}
+          </div>
 
           <select
             class="form-select m-1"
@@ -111,8 +114,10 @@
             class="form-select m-1"
             name="filteredVakufNames"
             aria-label="Naziv Vakufa"
+            [disabled]="selectedMarkerNames.length === 0"
             [(ngModel)]="filteredVakufNames"
             (change)="filterMarkers()"
+
           >
             <ng-container
               *ngIf="selectedMarkerNames.length > 0; else noOptions"
@@ -123,7 +128,7 @@
               </ng-container>
             </ng-container>
             <ng-template #noOptions>
-              <option value="" disabled selected>Nema stavki</option>
+              <option value="" disabled selected>Nema zadatih filtera</option>
             </ng-template>
           </select> <!-- Select filteredVakufNames End -->
 

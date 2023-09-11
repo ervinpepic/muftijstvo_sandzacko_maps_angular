@@ -1,4 +1,4 @@
-.navbar-override {
+.navbar-color-override {
   background-color: #52a77a;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
@@ -15,6 +15,9 @@
 
 .navbar-toggler-icon {
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgb(182, 163, 124)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='3' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+.form-select:disabled {
+  background-color: #d2d3d5;
 }
 
 .search-suggestions {
