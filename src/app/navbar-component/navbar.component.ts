@@ -63,19 +63,25 @@ export class NavbarComponent {
     this.filteredMarkers = this.markerService.filteredMarkers;
     console.log('Ovo je SelektedMarkerNejms=>', this.selectedMarkerNames)
     console.log('Ovo je VisibleVakufMarkerNejms=>', this.filteredMarkers);
+    console.log('Ovo je SearchSuggestions =>', this.searchSuggestions);
   }
 
   // Arrow function for calling filter function
   filterMarkersFunc = () => {
-    this.selectedMarkerNames = this.markerService.markers
-      .filter(
-        (marker) =>
-          (!this.selectedCity || marker.city === this.selectedCity) &&
-          (!this.selectedVakufType || marker.vakufType === this.selectedVakufType)
-      ).map((marker) => marker.vakufName);
-    this.filteredVakufNames = ''
+    if (this.selectedCity !== '' || this.selectedVakufType !== '' || this.searchQuery !== '') {
+      this.selectedMarkerNames = this.markerService.markers
+        .filter(
+          (marker) =>
+            (!this.selectedCity || marker.city === this.selectedCity) &&
+            (!this.selectedVakufType || marker.vakufType === this.selectedVakufType)
+        ).map((marker) => marker.vakufName);
+      this.filteredVakufNames = ''; // Clear the filteredVakufNames here
+    } else {
+      this.selectedMarkerNames = [];
+    }
     this.filterMarkers(); // filter markers on the map
   };
+  
 
   //generating suggestions based on typings
   generateSearchSuggestions(value: string): void {

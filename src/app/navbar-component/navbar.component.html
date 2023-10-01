@@ -58,6 +58,7 @@
             </li>
             <li
               class="list-group-item"
+              tabindex="{{searchSuggestions}}"
               *ngFor="let suggestion of searchSuggestions | slice : 0 : 6"
               (click)="selectSearchSuggestion(suggestion)"
             >
@@ -120,7 +121,7 @@
 
           >
             <ng-container
-              *ngIf="selectedMarkerNames.length > 0; else noOptions"
+              *ngIf='selectedMarkerNames.length > 0; else noOptions'
             >
               <option value="" selected disabled>Izaberi Vakuf</option>
               <ng-container *ngFor="let name of selectedMarkerNames">
