@@ -16,10 +16,10 @@ export class NavbarComponent {
     private markerService: MarkerService, // creating instance for marker service
     private searchSuggestionService: GenerateSuggestionsService // creating instance for suggestion service
   ) {
-    this.vakufObjTypesAndCitiesInit(); // initialization of objects and cities when the app load.
+    this.initializeData(); // initialization of objects and cities when the app load.
   }
 
-  searchControl: FormControl = new FormControl();
+  searchControl = new FormControl();
 
   //ngModel bindingd
   searchQuery = '';
@@ -42,7 +42,7 @@ export class NavbarComponent {
   errorMessage = '';
 
   // method for calling objects and cities on the app init
-  async vakufObjTypesAndCitiesInit(): Promise<void> {
+  async initializeData(): Promise<void> {
     try {
       this.vakufObjectTypes$ = this.markerService.loadObjectTypes();
       this.vakufCities$ = this.markerService.loadCities();
@@ -67,7 +67,7 @@ export class NavbarComponent {
   }
 
   // Arrow function for calling filter function
-  filterMarkersFunc = () => {
+  filterMarkersFunc (): void {
     if (this.selectedCity !== '' || this.selectedVakufType !== '' || this.searchQuery !== '') {
       this.selectedMarkerNames = this.markerService.markers
         .filter(
@@ -82,7 +82,6 @@ export class NavbarComponent {
     this.filterMarkers(); // filter markers on the map
   };
   
-
   //generating suggestions based on typings
   generateSearchSuggestions(value: string): void {
     const suggestion = (this.searchSuggestions =
@@ -112,7 +111,7 @@ export class NavbarComponent {
   }
 
   // Method for getting forms input to show or hide suggestion 
-  handleSearchInput(event: Event) {
+  handleSearchInput(event: Event): void {
     const inputElement = event.target as HTMLInputElement;
     this.searchControl.setValue(inputElement.value);
 

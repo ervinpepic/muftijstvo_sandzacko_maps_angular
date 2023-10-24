@@ -5,9 +5,7 @@ import { CustomMarker } from '././marker/Marker'; // Marker interface
 @Injectable({
   providedIn: 'root',
 })
-
 export class GenerateSuggestionsService {
-
   // FormControl for search input
   searchControl: FormControl = new FormControl();
 
@@ -30,27 +28,29 @@ export class GenerateSuggestionsService {
         return [];
       }
 
-      const searchSuggestions: string[] = [];
+      // Use a Set to store unique suggestions
+      const searchSuggestionsSet: Set<string> = new Set();
 
       // Iterate through visible markers to find matching suggestions
       visibleMarkers.forEach((marker) => {
+        const lowercaseValue = value.toLowerCase();
+
         // Check if the marker's name matches the input value
-        if (marker.vakufName.toLowerCase().includes(value.toLowerCase())) {
-          searchSuggestions.push(marker.vakufName);
+        if (marker.vakufName.toLowerCase().includes(lowercaseValue)) {
+          searchSuggestionsSet.add(marker.vakufName);
         }
-        
         // Check if the marker's cadastral parcel number matches the input value
         if (
-          marker.cadastralParcelNumber.toLowerCase().includes(value.toLowerCase())
+          marker.cadastralParcelNumber.toLowerCase().includes(lowercaseValue)
         ) {
           // Create a suggestion including both parcel number and name
-          const suggestion =
-            marker.cadastralParcelNumber + ' (' + marker.vakufName + ')';
-          searchSuggestions.push(suggestion);
+          const suggestion = `${marker.cadastralParcelNumber} (${marker.vakufName})`;
+          searchSuggestionsSet.add(suggestion);
         }
       });
 
-      return searchSuggestions;
+      // Convert Set to an array and return
+      return Array.from(searchSuggestionsSet);
     } catch (error) {
       // Add error handling or logging here if needed
       console.error('Error generating search suggestions:', error);

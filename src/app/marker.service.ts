@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, of, lastValueFrom } from 'rxjs';
 
 import { CustomMarker } from './marker/Marker';
 import { sandzakCity } from './database/sandzak-cities';
@@ -38,9 +38,8 @@ export class MarkerService {
 
   async createMarkers(map: google.maps.Map) {
     try {
-      const markerData = await this.getMarkers().toPromise();
-      this.markers = [];
-      markerData?.forEach((data) => {
+      const markerData = await lastValueFrom(this.getMarkers());
+      this.markers = markerData?.map((data) => {
         const marker = new google.maps.Marker({
           ...data,
           position: new google.maps.LatLng(data.position),
@@ -54,9 +53,9 @@ export class MarkerService {
         this.markerEvents.markerMouseOver(marker);
         this.markerEvents.markerMouseOut(marker);
 
-        this.markers.push(marker); //add extracted markers to the array of markers
         marker.setMap(map); //set map
-      });
+        return marker
+      }) || [];
     } catch (error) {
       console.error('Error creating markers', error);
     }
@@ -79,38 +78,32 @@ export class MarkerService {
     selectedVakufType: string,
     filteredVakufNames: string,
     searchTerm: string
-  ): void {
+  ): CustomMarker[] {
     const visibleMarkers: CustomMarker[] = [];
-
+  
     markers.forEach((marker) => {
+      const { city, vakufType, vakufName, cadastralParcelNumber } = marker;
+  
       const isVisible =
-        (!selectedCity || marker.city === selectedCity) &&
-        (!selectedVakufType || marker.vakufType === selectedVakufType) &&
-        (!filteredVakufNames || marker.vakufName === filteredVakufNames) &&
+        (!selectedCity || city === selectedCity) &&
+        (!selectedVakufType || vakufType === selectedVakufType) &&
+        (!filteredVakufNames || vakufName === filteredVakufNames) &&
         (!searchTerm ||
-          marker.vakufName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          marker.cadastralParcelNumber
-            .toLowerCase()
-            .includes(searchTerm.toLowerCase()));
-      marker.setVisible(isVisible);
-
-      if (isVisible) {
-        const customMarker: CustomMarker = {
-          vakufName: marker.vakufName,
-          vakufType: marker.vakufType,
-          city: marker.city,
-          cadastralMunicipality: marker.cadastralMunicipality,
-          cadastralParcelNumber: marker.cadastralParcelNumber,
-          realEstateNumber: marker.realEstateNumber,
-          areaSize: marker.areaSize,
-          yearFounded: marker.yearFounded,
-          streetName: marker.streetName,
-          vakufImage: marker.vakufImage,
-          position: marker.position,
-        };
-        visibleMarkers.push(customMarker);
+          vakufName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          cadastralParcelNumber.toLowerCase().includes(searchTerm.toLowerCase()));
+  
+      if (!isVisible) {
+        marker.setVisible(false);
+        return;
       }
+  
+      visibleMarkers.push(marker);
+      marker.setVisible(true);
     });
+  
     this.filteredMarkers = visibleMarkers;
-  }
+  
+    return visibleMarkers;
+  }  
+  
 }
