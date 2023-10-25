@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, lastValueFrom } from 'rxjs';
+import { Observable, lastValueFrom, of } from 'rxjs';
 
-import { CustomMarker } from './marker/Marker';
-import { sandzakCity } from './database/sandzak-cities';
 import { VakufData } from './database/database-seed';
+import { sandzakCity } from './database/sandzak-cities';
 import { vakufObjecType } from './database/vakuf-types';
+import { CustomMarker } from './marker/Marker';
 
 import { MarkerEvents } from './marker/events/marker-events';
 import { StylingMarkers } from './marker/styling/marker-style';

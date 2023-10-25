@@ -1,6 +1,6 @@
-import { StylingMarkers } from '../styling/marker-style';
-import { infoWindowStyling } from '../info-window/info-window-style';
 import { CustomMarker } from '../Marker';
+import { infoWindowStyling } from '../info-window/info-window-style';
+import { StylingMarkers } from '../styling/marker-style';
 
 export class MarkerEvents {
   infoWindowsClose: any = [];

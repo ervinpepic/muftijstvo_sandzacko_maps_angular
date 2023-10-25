@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 
-import { CustomMarker } from '../marker/Marker'; // Marker interface
-import { MarkerService } from '../marker.service'; // Marker service
 import { GenerateSuggestionsService } from '../generate-suggestions.service'; // Service for suggesting search items
+import { MarkerService } from '../marker.service'; // Marker service
+import { CustomMarker } from '../marker/Marker'; // Marker interface
 
 @Component({
   selector: 'app-navbar',

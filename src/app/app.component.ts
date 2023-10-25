@@ -1,16 +1,16 @@
 import {
   Component,
-  ViewChild,
   ElementRef,
   OnInit,
+  ViewChild,
 } from '@angular/core';
 import { Loader } from '@googlemaps/js-api-loader'; //Google async MAPS API loader
 import { GOOGLEAPIKEY } from 'src/env'; // API key from env file
 
 import { mapStyling } from './map/map-style'; //map stype
 
-import { PolygonsBoundaries } from './polygons/map-polygons'; //Data sets import
 import { MarkerService } from './marker.service';
+import { PolygonsBoundaries } from './polygons/map-polygons'; //Data sets import
 
 @Component({
   selector: 'app-root',
