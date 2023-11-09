@@ -60,10 +60,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "MuftijstvoSandzackoMaps:build:production"
+              "buildTarget": "MuftijstvoSandzackoMaps:build:production"
             },
             "development": {
-              "browserTarget": "MuftijstvoSandzackoMaps:build:development"
+              "buildTarget": "MuftijstvoSandzackoMaps:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -71,7 +71,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "MuftijstvoSandzackoMaps:build"
+            "buildTarget": "MuftijstvoSandzackoMaps:build"
           }
         },
         "test": {
