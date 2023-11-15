@@ -5,6 +5,7 @@
 /src/app/database/database-seed.ts
 /src/app/polygons/sandzak/*.ts
 /src/env.ts
+/src/assets/images/
 
 /dist
 /tmp
