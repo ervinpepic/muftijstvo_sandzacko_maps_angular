@@ -59,7 +59,7 @@
             <li
               class="list-group-item"
               tabindex="{{searchSuggestions}}"
-              *ngFor="let suggestion of searchSuggestions | slice : 0 : 6"
+              *ngFor="let suggestion of searchSuggestions"
               (click)="selectSearchSuggestion(suggestion)"
             >
               <span
