@@ -5,8 +5,8 @@
 /src/app/database/database-seed.ts
 /src/app/polygons/sandzak/*.ts
 /src/env.ts
-/src/assets/images/land-images
-/src/assets/images/mosque-images
+/src/assets/images/land-images/
+/src/assets/images/mosque-images/
 
 /dist
 /tmp
