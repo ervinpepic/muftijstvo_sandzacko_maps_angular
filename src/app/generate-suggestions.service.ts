@@ -24,35 +24,38 @@ export class GenerateSuggestionsService {
   ): string[] {
     try {
       // Check if there are visible markers to generate suggestions from
-      if (!visibleMarkers) {
+      if (!Array.isArray(visibleMarkers) || visibleMarkers.length === 0) {
         return [];
       }
 
-      // Use a Set to store unique suggestions
-      const searchSuggestionsSet: Set<string> = new Set();
+      const searchSuggestionsMap = new Map<string, number>();
 
-      // Iterate through visible markers to find matching suggestions
       visibleMarkers.forEach((marker) => {
         const lowercaseValue = value.toLowerCase();
-
-        // Check if the marker's name matches the input value
+  
         if (marker.vakufName.toLowerCase().includes(lowercaseValue)) {
-          searchSuggestionsSet.add(marker.vakufName);
+          // Assign a relevance score based on the match
+          searchSuggestionsMap.set(marker.vakufName, 1);
         }
-        // Check if the marker's cadastral parcel number matches the input value
+  
         if (
-          marker.cadastralParcelNumber.toLowerCase().includes(lowercaseValue)
+          marker.cadastralParcelNumber
+            .toLowerCase()
+            .includes(lowercaseValue)
         ) {
-          // Create a suggestion including both parcel number and name
           const suggestion = `${marker.cadastralParcelNumber} (${marker.vakufName})`;
-          searchSuggestionsSet.add(suggestion);
+          // Assign a higher relevance score for suggestions with both parcel number and name
+          searchSuggestionsMap.set(suggestion, 2);
         }
       });
-
-      // Convert Set to an array and return
-      return Array.from(searchSuggestionsSet);
+  
+      // Sort suggestions based on relevance score
+      const sortedSuggestions = Array.from(searchSuggestionsMap.keys()).sort(
+        (a, b) => searchSuggestionsMap.get(b)! - searchSuggestionsMap.get(a)!
+      );
+  
+      return sortedSuggestions;
     } catch (error) {
-      // Add error handling or logging here if needed
       console.error('Error generating search suggestions:', error);
       return [];
     }

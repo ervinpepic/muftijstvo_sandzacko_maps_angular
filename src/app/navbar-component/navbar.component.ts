@@ -83,8 +83,8 @@ export class NavbarComponent {
   };
   
   //generating suggestions based on typings
-  generateSearchSuggestions(value: string): void {
-    const suggestion = (this.searchSuggestions =
+  async generateSearchSuggestions(value: string): Promise<void> {
+    const suggestion = await (this.searchSuggestions =
       this.searchSuggestionService.generateSearchSuggestions(
         value,
         this.filteredMarkers || []
