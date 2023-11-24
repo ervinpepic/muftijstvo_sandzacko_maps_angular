@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { CustomMarker } from '././marker/Marker'; // Marker interface
+import { CustomMarker } from '../Marker';
 
 @Injectable({
   providedIn: 'root',
@@ -14,12 +14,12 @@ export class GenerateSuggestionsService {
   /**
    * Generate search suggestions based on the input value and visible markers.
    *
-   * @param value The search input value.
+   * @param inputValue The search input value.
    * @param visibleMarkers The currently visible markers to filter suggestions from.
    * @returns An array of search suggestions.
    */
   generateSearchSuggestions(
-    value: string,
+    inputValue: string,
     visibleMarkers: CustomMarker[]
   ): string[] {
     try {
@@ -28,32 +28,30 @@ export class GenerateSuggestionsService {
         return [];
       }
 
-      const searchSuggestionsMap = new Map<string, number>();
+      const suggestionsMap = new Map<string, number>();
 
       visibleMarkers.forEach((marker) => {
-        const lowercaseValue = value.toLowerCase();
-  
-        if (marker.vakufName.toLowerCase().includes(lowercaseValue)) {
+        const lowercaseInput = inputValue.toLowerCase();
+
+        if (marker.vakufName.toLowerCase().includes(lowercaseInput)) {
           // Assign a relevance score based on the match
-          searchSuggestionsMap.set(marker.vakufName, 1);
+          suggestionsMap.set(marker.vakufName, 1);
         }
-  
+
         if (
-          marker.cadastralParcelNumber
-            .toLowerCase()
-            .includes(lowercaseValue)
+          marker.cadastralParcelNumber.toLowerCase().includes(lowercaseInput)
         ) {
           const suggestion = `${marker.cadastralParcelNumber} (${marker.vakufName})`;
           // Assign a higher relevance score for suggestions with both parcel number and name
-          searchSuggestionsMap.set(suggestion, 2);
+          suggestionsMap.set(suggestion, 2);
         }
       });
-  
+
       // Sort suggestions based on relevance score
-      const sortedSuggestions = Array.from(searchSuggestionsMap.keys()).sort(
-        (a, b) => searchSuggestionsMap.get(b)! - searchSuggestionsMap.get(a)!
+      const sortedSuggestions = Array.from(suggestionsMap.keys()).sort(
+        (a, b) => suggestionsMap.get(b)! - suggestionsMap.get(a)!
       );
-  
+
       return sortedSuggestions;
     } catch (error) {
       console.error('Error generating search suggestions:', error);

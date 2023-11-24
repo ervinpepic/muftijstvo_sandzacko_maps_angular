@@ -38,7 +38,7 @@
             aria-label="Search"
             placeholder="Naziv | br. parcele"
             [(ngModel)]="searchQuery"
-            (input)="filterMarkers(); handleSearchInput($event)"
+            (input)="updateMarkersVisibility(); handleSearchInput($event)"
           />
           <span class="input-group-append">
             <span class="input-group-text">
@@ -84,7 +84,7 @@
             name="vakufType"
             aria-label="Tip"
             [(ngModel)]="selectedVakufType"
-            (change)="filterMarkersFunc()"
+            (change)="filterMarkers()"
           >
             <option value="" selected>Tip</option>
             <option
@@ -100,7 +100,7 @@
             name="selectedCity"
             aria-label="Grad"
             [(ngModel)]="selectedCity"
-            (change)="filterMarkersFunc()"
+            (change)="filterMarkers()"
           >
             <option value="" selected>Grad</option>
             <option
@@ -117,7 +117,7 @@
             aria-label="Naziv Vakufa"
             [disabled]="selectedMarkerNames.length === 0"
             [(ngModel)]="filteredVakufNames"
-            (change)="filterMarkers()"
+            (change)="updateMarkersVisibility()"
 
           >
             <ng-container

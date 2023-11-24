@@ -3,10 +3,9 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { EllipsisPipe } from './ellipsis.pipe';
-import { HighlightSearchTermPipe } from './highlight-search-term.pipe';
-import { NavbarComponent } from './navbar-component/navbar.component';
-
+import { NavbarComponent } from './components/navbar-component/navbar.component';
+import { EllipsisPipe } from './pipes/ellipsis.pipe';
+import { HighlightSearchTermPipe } from './pipes/highlight-search-term.pipe';
 
 
 @NgModule({
