@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable, combineLatest, of } from 'rxjs';
 
 import { GenerateSuggestionsService } from '../../services/generate-suggestions.service'; // Service for suggesting search items
 import { MarkerFilterService } from '../../services/marker-filter.service';
 import { MarkerService } from '../../services/marker.service'; // Marker service
+import { NgSelectComponent } from '@ng-select/ng-select';
 
 import { CustomMarker } from '../../Marker'; // Marker interface
 
@@ -20,13 +21,16 @@ export class NavbarComponent implements OnInit {
     private markerFilterService: MarkerFilterService // creating instance for filter service
   ) {}
 
+  @ViewChild('filteredVakufNamesSelect') filteredVakufNamesSelect!: NgSelectComponent;
+  @ViewChild('citySelect') citySelect!: NgSelectComponent;
+
   searchControl = new FormControl();
 
   //ngModel bindingd
   searchQuery = '';
-  selectedCity = '';
-  selectedVakufType = '';
-  filteredVakufNames = '';
+  selectedCity: string | null = null;
+  selectedVakufType: string | null = null;
+  filteredVakufNames: string | null = null;
 
   //arrays
   markers: CustomMarker[] = [];
@@ -85,7 +89,7 @@ export class NavbarComponent implements OnInit {
               marker.vakufType === this.selectedVakufType)
         )
         .map((marker) => marker.vakufName);
-      this.filteredVakufNames = ''; // clear the filteredVakufNames here
+      this.filteredVakufNames = null; // clear the filteredVakufNames here
     } else {
       this.selectedMarkerNames = [];
     }
@@ -140,5 +144,13 @@ export class NavbarComponent implements OnInit {
       this.filteredVakufNames || '',
       this.searchQuery
     );
+  }
+
+  onVakufTypeChange(): void {
+    this.citySelect.open();
+  }
+  onCityChange(): void {
+    this.citySelect.close();
+    this.filteredVakufNamesSelect.open();
   }
 }

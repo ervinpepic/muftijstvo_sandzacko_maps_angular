@@ -7,6 +7,7 @@
 /src/env.ts
 /src/assets/images/land-images
 /src/assets/images/mosque-images
+/src/environments
 
 /dist
 /tmp

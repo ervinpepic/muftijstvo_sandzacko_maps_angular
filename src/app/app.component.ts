@@ -1,9 +1,9 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Loader } from '@googlemaps/js-api-loader'; //Google async MAPS API loader
-import { GOOGLEAPIKEY } from 'src/env'; // API key from env file
 
 import { mapStyle } from './style/map/map-style'; //map stype
 
+import { environment } from 'src/environments/environment.development';
 import { PolygonsBoundaries } from './polygons/map-polygons'; //Data sets import
 import { MarkerService } from './services/marker.service';
 
@@ -32,7 +32,7 @@ export class AppComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     try {
       const googleApiAsyncLoader = new Loader({
-        apiKey: GOOGLEAPIKEY,
+        apiKey: environment.GOOGLEAPIKEY,
         version: 'weekly',
       });
 

@@ -6,11 +6,12 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './components/navbar-component/navbar.component';
 import { EllipsisPipe } from './pipes/ellipsis.pipe';
 import { HighlightSearchTermPipe } from './pipes/highlight-search-term.pipe';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 
 @NgModule({
   declarations: [AppComponent, EllipsisPipe, HighlightSearchTermPipe, NavbarComponent],
-  imports: [BrowserModule, FormsModule, AppRoutingModule],
+  imports: [BrowserModule, FormsModule, AppRoutingModule, NgSelectModule],
   providers: [],
   bootstrap: [AppComponent],
 })
