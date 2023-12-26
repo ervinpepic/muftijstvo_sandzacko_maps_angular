@@ -37,7 +37,7 @@
             (input)="updateMarkersVisibility(); handleSearchInput($event)" 
           />
           <span class="input-group-append">
-            <span class="input-group-text" *ngIf="searchQuery.length === 0">
+            <span class="input-group-text" *ngIf="searchQuery?.length === 0">
               <i 
                 class="fas-sharp fa-solid fa-magnifying-glass-location fa-lg me-2" 
                 style="color: #27a27a">
@@ -57,7 +57,7 @@
               *ngFor="let suggestion of searchSuggestions" 
               (click)="selectSearchSuggestion(suggestion)"
             >
-              <span [innerHTML]="suggestion | highlightSearchTerm : searchQuery">
+              <span [innerHTML]="suggestion | highlightSearchTerm : searchQuery!">
               </span>
             </li>
           </ul>

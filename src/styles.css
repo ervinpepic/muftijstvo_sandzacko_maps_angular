@@ -1,7 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 /* You can add global styles to this file, and also import other style files */
 @import "~@ng-select/ng-select/themes/default.theme.css";
-
 body {
   background-image: url("./assets/images/info-window-background.png");
   background-attachment: fixed;
@@ -18,6 +17,7 @@ img {
   max-height: max-content;
   max-width: max-content;
 }
+
 
 .ng-select.custom {
   border:0px;

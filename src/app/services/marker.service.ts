@@ -63,14 +63,4 @@ export class MarkerService {
     marker.setMap(map); // Set the map
     return marker;
   }
-
-  // Async load for types from services
-  loadObjectTypes(): Observable<string[]> {
-    return this.getVakufObjectTypes();
-  }
-
-  // Async load for cities from services
-  loadCities(): Observable<string[]> {
-    return this.getVakufCities();
-  }
 }
